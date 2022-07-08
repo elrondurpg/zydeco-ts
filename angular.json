@@ -3,5 +3,36 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
+    "zydeco-ts": {
+      "projectType": "library",
+      "root": "projects/zydeco-ts",
+      "sourceRoot": "projects/zydeco-ts/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/zydeco-ts/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/zydeco-ts/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/zydeco-ts/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/zydeco-ts/src/test.ts",
+            "tsConfig": "projects/zydeco-ts/tsconfig.spec.json",
+            "karmaConfig": "projects/zydeco-ts/karma.conf.js"
+          }
+        }
+      }
+    }
   }
 }

@@ -1,0 +1,27 @@
+<div class="container">
+    <div class="row p-2">
+        <div class="col-sm-2">
+            {{ attributeDefinition.title }}
+        </div>
+    
+        <div class="col-sm-5" *ngIf="editType == 'update'">
+            {{ currentValue != null ? ("" + currentValue | titlecase) : '' }}
+        </div>
+    
+        <div class="col-sm-5" *ngIf="editType == 'create' || !attributeDefinition.immutable">
+            <select 
+                class="form-control" 
+                [(ngModel)]="updatedValue" 
+                [required]="attributeDefinition.required && editType == 'create'"
+                #validator="ngModel"
+                [ngClass]="validator.invalid && (validator.dirty || validator.touched) ? 'is-invalid' : ''">
+                <option selected value="undefined">- unchanged -</option>
+                <option value="true">True</option>
+                <option value="false">False</option>
+            </select>
+            <div class="invalid-feedback" *ngIf="validator.errors && validator.errors.required">
+                Please provide a value for {{ attributeDefinition.title }}.
+            </div>   
+        </div>
+    </div>
+</div>

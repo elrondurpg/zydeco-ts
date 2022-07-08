@@ -1,0 +1,58 @@
+<div class="container pb-5" *ngIf="editType == 'create' || model !== undefined">
+    <zydeco-header [editType]="editType"></zydeco-header>
+    <ng-container *ngFor="let attribute of modelDefinition.attributes">
+        <ng-container [ngSwitch]="attribute.type.toLowerCase()">
+            <zydeco-string-attribute *ngSwitchDefault
+                [attributeDefinition]="attribute"
+                [editType]="editType" 
+                [currentValue]="model !== undefined ? getCurrentModelValue(attribute.modelSelector) : ''" 
+                [(ngModel)]="delta[attribute.deltaSelector]">
+            </zydeco-string-attribute>
+    
+            <zydeco-date-attribute *ngSwitchCase="'date'"
+                [attributeDefinition]="attribute"
+                [editType]="editType"
+                [currentValue]="model !== undefined ? getCurrentModelValue(attribute.modelSelector) : ''"
+                [(ngModel)]="delta[attribute.deltaSelector]">
+            </zydeco-date-attribute>
+    
+            <zydeco-select-attribute *ngSwitchCase="'select'"
+                [attributeDefinition]="attribute"
+                [editType]="editType"
+                [currentValue]="model !== undefined ? getCurrentModelValue(attribute.modelSelector) : ''"
+                [(ngModel)]="delta[attribute.deltaSelector]">
+            </zydeco-select-attribute>
+    
+            <zydeco-boolean-attribute *ngSwitchCase="'boolean'"
+                [attributeDefinition]="attribute"
+                [editType]="editType"
+                [currentValue]="model !== undefined ? getCurrentModelValue(attribute.modelSelector) : ''"
+                [(ngModel)]="delta[attribute.deltaSelector]">
+            </zydeco-boolean-attribute>
+    
+            <zydeco-number-attribute *ngSwitchCase="'number'"
+                [attributeDefinition]="attribute"
+                [editType]="editType"
+                [currentValue]="model !== undefined ? getCurrentModelValue(attribute.modelSelector) : ''"
+                [(ngModel)]="delta[attribute.deltaSelector]">
+            </zydeco-number-attribute>
+        </ng-container>
+
+        <div class="container-fluid border border-info"
+            *ngIf="attribute.instructions != null">
+            <div class="row py-2">
+                <div class="col" 
+                    (click)="toggleInstructions()">
+                        <p class="m-0">Instructions for field <strong>{{ attribute.title }}</strong> {{ showInstructions ? '-' : '+' }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col"
+                    *ngIf="showInstructions"
+                    (click)="toggleInstructions()">
+                        <p>{{ attribute.instructions }}</p>
+                </div>
+            </div>
+        </div>
+    </ng-container>  
+</div>

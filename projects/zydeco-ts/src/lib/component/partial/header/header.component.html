@@ -1,0 +1,18 @@
+<div class="container pb-40">
+    <nav aria-label="breadcrumb" class="pt-3">
+        <ol class="breadcrumb">
+            <li *ngFor="let breadcrumb of parent.breadcrumbs">
+                <a [attr.href]="breadcrumb.url">{{ breadcrumb.title }}</a>
+            </li>
+            <li class="breadcrumb-item" aria-current="page">{{ parent.title }}</li>
+        </ol>
+    </nav>
+    <zydeco-search 
+        [items]="parent.items" 
+        [complex]="parent.complex" 
+        [changes]="parent.detectChanges()" 
+        (create)="parent.create()" 
+        (load)="parent.load($event)" 
+        (save)="parent.save()"></zydeco-search>
+    <zydeco-message #messageBox></zydeco-message>
+</div>
