@@ -1,5 +1,5 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import type { ResourceComponent } from '../../resource/resource.component';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Breadcrumb } from '../../../model/Breadcrumb';
 import { MessageComponent } from '../message/message.component';
 
 @Component({
@@ -7,7 +7,15 @@ import { MessageComponent } from '../message/message.component';
   templateUrl: './header.component.html'
 })
 export class HeaderComponent implements OnInit {
-  @Input() parent!: ResourceComponent<any, any>;
+  @Input() breadcrumbs  :Breadcrumb[] = [];
+  @Input() complex!     :boolean;
+  @Input() changes!     :boolean;
+  @Input() items!       :any[];
+  @Input() title!       :string;
+
+  @Output() create  = new EventEmitter();
+  @Output() save    = new EventEmitter();
+  @Output() load    = new EventEmitter();
 
   @ViewChild('messageBox', {static: false})
   messageBox!: MessageComponent;
@@ -32,5 +40,17 @@ export class HeaderComponent implements OnInit {
   
   showErrorMessageArray(header:string, errors:string[]) {
     this.messageBox.showErrorArray(header, errors);
+  }
+
+  emitCreate() {
+    this.create.emit();
+  }
+  
+  emitSave() {
+    this.save.emit();
+  }
+
+  emitLoad(event:any) {
+    this.load.emit(event);
   }
 }

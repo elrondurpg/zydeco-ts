@@ -1,5 +1,4 @@
 import { Injector, NgModule } from '@angular/core';
-import { ResourceComponent } from './component/resource/resource.component';
 import { HeaderComponent } from './component/partial/header/header.component';
 import { MessageComponent } from './component/partial/message/message.component';
 import { SearchComponent } from './component/partial/search/search.component';
@@ -15,7 +14,6 @@ import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
-    ResourceComponent,
     HeaderComponent,
     MessageComponent,
     SearchComponent,
@@ -33,7 +31,8 @@ import { CommonModule } from '@angular/common';
     ReactiveFormsModule
   ],
   exports: [
-    ResourceComponent
+    AttributesComponent,
+    HeaderComponent
   ]
 })
 export class ZydecoTs { 
