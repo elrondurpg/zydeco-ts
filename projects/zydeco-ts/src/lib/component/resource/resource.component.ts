@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, Optional, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { plainToClass } from 'class-transformer';
 import { Breadcrumb } from '../../model/Breadcrumb';
@@ -15,24 +15,24 @@ import { HeaderComponent } from '../partial/header/header.component';
 export class ResourceComponent<ModelClass extends ObjectModel, DeltaClass extends ObjectModel> implements OnInit {
 
   protected service         :RestService;
-  protected model!          :ModelClass;
-  protected delta!          :DeltaClass;
+  public model!          :ModelClass;
+  public delta!          :DeltaClass;
 
-  protected items           :any[]            = [];
-  protected breadcrumbs     :Breadcrumb[]     = [];
-  protected modelDefinition :ModelDefinition  = new ModelDefinition([]);
-  protected editType        :string           = "update";
-  protected complex         :boolean          = false;
+  public items           :any[]            = [];
+  public complex         :boolean          = false;
+  public breadcrumbs     :Breadcrumb[]     = [];
+  public modelDefinition :ModelDefinition  = new ModelDefinition([]);
+  public api             :string           = "";
+  public editType        :string           = "update";
+  public title           :string           = "";
 
   @ViewChild('header', {static: false})
   protected header!         :HeaderComponent;
 
   constructor(
-    protected title     :string,
-    protected api       :string,
-    protected modelType : new () => ModelClass,
-    protected deltaType : new () => DeltaClass,
-    protected route     :ActivatedRoute
+    @Inject("string") protected modelType : new () => ModelClass,
+    @Inject("string") protected deltaType : new () => DeltaClass,
+    protected route     : ActivatedRoute
   ) { 
     this.service  = ZydecoTs.injector.get(RestService);
     this.delta    = new this.deltaType();

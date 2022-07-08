@@ -15,7 +15,7 @@
             <button *ngIf="filterable == true" type="submit" class="btn btn-primary btn-block" (click)="emitLoad()">Load</button>
         </div>
         <div class="col-md-2">
-            <button type="button" class="btn btn-primary btn-block" (click)="filter = undefined; emitCreate()">+ New</button>
+            <button type="button" class="btn btn-primary btn-block" (click)="filter = ''; emitCreate()">+ New</button>
         </div>
         <div class="col-md-2">
             <button type="button" class="btn btn-block" [ngClass]="changes == false ? 'btn-primary' : 'btn-warning'" [disabled]="changes == false" (click)="emitSave()">Save</button>

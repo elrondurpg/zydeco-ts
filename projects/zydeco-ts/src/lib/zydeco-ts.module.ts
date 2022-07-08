@@ -1,5 +1,4 @@
 import { Injector, NgModule } from '@angular/core';
-import { RestService } from './service/rest.service';
 import { ResourceComponent } from './component/resource/resource.component';
 import { HeaderComponent } from './component/partial/header/header.component';
 import { MessageComponent } from './component/partial/message/message.component';
@@ -10,13 +9,12 @@ import { BooleanAttributeComponent } from './component/partial/boolean-attribute
 import { SelectAttributeComponent } from './component/partial/select-attribute/select-attribute.component';
 import { DateAttributeComponent } from './component/partial/date-attribute/date-attribute.component';
 import { NumberAttributeComponent } from './component/partial/number-attribute/number-attribute.component';
-import { AttributeComponent } from './component/partial/attribute/attribute.component';
-
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
-    RestService,
     ResourceComponent,
     HeaderComponent,
     MessageComponent,
@@ -26,13 +24,15 @@ import { AttributeComponent } from './component/partial/attribute/attribute.comp
     BooleanAttributeComponent,
     SelectAttributeComponent,
     DateAttributeComponent,
-    NumberAttributeComponent,
-    AttributeComponent
+    NumberAttributeComponent
   ],
   imports: [
+    BrowserModule,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [
-    RestService,
     ResourceComponent
   ]
 })

@@ -16,7 +16,7 @@
                 [required]="attributeDefinition.required && editType == 'create'"
                 #validator="ngModel"
                 [ngClass]="validator.invalid && (validator.dirty || validator.touched) ? 'is-invalid' : ''">
-            <div class="invalid-feedback" *ngIf="validator.errors && validator.errors.required">
+            <div class="invalid-feedback" *ngIf="validator.errors && validator.errors['required']">
                 Please provide a value for {{ attributeDefinition.title }}.
             </div>   
         </div>

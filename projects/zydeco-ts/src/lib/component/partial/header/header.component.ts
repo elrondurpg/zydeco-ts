@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { ResourceComponent } from '../../resource/resource.component';
+import type { ResourceComponent } from '../../resource/resource.component';
 import { MessageComponent } from '../message/message.component';
 
 @Component({

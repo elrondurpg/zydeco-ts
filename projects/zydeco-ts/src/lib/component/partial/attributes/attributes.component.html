@@ -1,5 +1,5 @@
 <div class="container pb-5" *ngIf="editType == 'create' || model !== undefined">
-    <zydeco-header [editType]="editType"></zydeco-header>
+    <zydeco-header></zydeco-header>
     <ng-container *ngFor="let attribute of modelDefinition.attributes">
         <ng-container [ngSwitch]="attribute.type.toLowerCase()">
             <zydeco-string-attribute *ngSwitchDefault

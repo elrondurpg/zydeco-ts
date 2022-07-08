@@ -18,7 +18,7 @@
                 <option selected value="undefined">- unchanged -</option>
                 <option *ngFor="let item of attributeDefinition.items" [value]="item">{{ item }}</option>
             </select>
-            <div class="invalid-feedback" *ngIf="validator.errors && validator.errors.required">
+            <div class="invalid-feedback" *ngIf="validator.errors && validator.errors['required']">
                 Please provide a value for {{ attributeDefinition.title }}.
             </div>   
         </div>

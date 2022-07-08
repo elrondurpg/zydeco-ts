@@ -3,9 +3,10 @@ import { ControlValueAccessor } from "@angular/forms";
 import { AttributeDefinition } from '../../../model/AttributeDefinition';
 
 @Component({
-  selector: 'zydeco-attribute'
+  selector: 'zydeco-attribute',
+  template: ''
 })
-export class AttributeComponent implements ControlValueAccessor, OnInit {
+export abstract class AttributeComponent implements ControlValueAccessor, OnInit {
 
   @Input() attributeDefinition! :AttributeDefinition;
   @Input() currentValue!        :string;

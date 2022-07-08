@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { AttributeDefinition } from '../../../model/AttributeDefinition';
 import { ModelDefinition } from '../../../model/ModelDefinition';
 import { ObjectModel } from '../../../model/ObjectModel';
 

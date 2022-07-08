@@ -19,13 +19,13 @@
                 [required]="attributeDefinition.required && editType == 'create'"
                 #validator="ngModel"
                 [ngClass]="validator.invalid && (validator.dirty || validator.touched) ? 'is-invalid' : ''">               
-            <div class="invalid-feedback" *ngIf="validator.errors && validator.errors.min">
-                {{ attribute }} must be at least {{ min }}.
+            <div class="invalid-feedback" *ngIf="validator.errors && validator.errors['min']">
+                {{ attributeDefinition.title }} must be at least {{ attributeDefinition.minvalue }}.
             </div>   
-            <div class="invalid-feedback" *ngIf="validator.errors && validator.errors.max">
-                {{ attribute }} must be no more than {{ max }}.
+            <div class="invalid-feedback" *ngIf="validator.errors && validator.errors['max']">
+                {{ attributeDefinition.title }} must be no more than {{ attributeDefinition.maxvalue }}.
             </div>   
-            <div class="invalid-feedback" *ngIf="validator.errors && validator.errors.required">
+            <div class="invalid-feedback" *ngIf="validator.errors && validator.errors['required']">
                 Please provide a value for {{ attributeDefinition.title }}.
             </div>   
         </div>
