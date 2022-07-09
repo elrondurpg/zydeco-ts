@@ -1,0 +1,11 @@
+<div class="row bg-dark text-light p-2 mx-0">
+    <div class="col-sm-2">
+        <h5>{{ fieldLabel }}</h5>
+    </div>
+    <div class="col-sm-5" *ngIf="editType == 'update'">
+        <h5>{{ currentValueLabel }}</h5>
+    </div>
+    <div class="col-sm-5">
+        <h5>{{ newValueLabel }}</h5>
+    </div>
+</div>

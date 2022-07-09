@@ -11,6 +11,7 @@ import { NumberAttributeComponent } from './component/partial/number-attribute/n
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
+import { AttributesHeaderComponent } from './component/partial/attributes-header/attributes-header.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { CommonModule } from '@angular/common';
     BooleanAttributeComponent,
     SelectAttributeComponent,
     DateAttributeComponent,
-    NumberAttributeComponent
+    NumberAttributeComponent,
+    AttributesHeaderComponent
   ],
   imports: [
     BrowserModule,

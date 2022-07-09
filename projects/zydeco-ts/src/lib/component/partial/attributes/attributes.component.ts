@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AttributeDefinition } from '../../../model/AttributeDefinition';
 import { ModelDefinition } from '../../../model/ModelDefinition';
 import { ObjectModel } from '../../../model/ObjectModel';
 
@@ -23,6 +22,14 @@ export class AttributesComponent implements OnInit {
 
   toggleInstructions() {
     this.showInstructions = !this.showInstructions;
+  }
+
+  getCurrentDeltaValue(selector:string) : any {
+    return this.delta[selector as keyof typeof this.delta];
+  }
+
+  setCurrentDeltaValue(selector:string, value:any) {
+    this.delta[selector as keyof typeof this.delta] = value;
   }
 
   getCurrentModelValue(selector:string) {
