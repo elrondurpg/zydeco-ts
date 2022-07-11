@@ -1,4 +1,145 @@
-<div><p>MODELS</p></div>
-<div *ngFor="let model of models">{{ model | json }}</div>
-<div><p>DELTA</p></div>
-<div *ngFor="let delta of deltas">{{ delta | json }}</div>
+<div class="accordion" [id]="getCollapsedTitle() + 'Accordion'">
+    <div class="card-header" id="headingOne">
+        <div class="row" *ngFor="let attribute of getFilterableKeys(); let i = index">
+            <div class="col-sm-4">
+                <button *ngIf="i == 1" class="btn btn-link" type="button" data-toggle="collapse" [attr.data-target]="'#' + getCollapsedTitle() + 'Collapse'" aria-expanded="true" [attr.aria-controls]="getCollapsedTitle() + 'Collapse'">
+                    {{ attributeDefinition.title }}
+                </button>
+            </div>
+            <div class="col-sm-4">
+                <input
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="filters[attribute.deltaSelector]"
+                    [placeholder]="'Filter ' + attribute.title" />
+            </div>
+            <div class="col-sm-2">
+                <!--button *ngIf="attribute.importable && i == 1" type="button" class="btn btn-primary btn-block"  data-toggle="modal" [attr.data-target]="'#bulkImport' + getTitle() + 'Modal'">
+                    Bulk Import
+                </button-->
+            </div>
+            <div class="col-sm-2">
+                <button *ngIf="i == 1" type="button" class="btn btn-primary btn-block"  data-toggle="modal" [attr.data-target]="'#new' + getCollapsedTitle() + 'Modal'">
+                    + New
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div [id]="getCollapsedTitle() + 'Collapse'" class="collapse" aria-labelledby="headingOne" [attr.data-parent]="'#' + getCollapsedTitle() + 'Accordion'">
+
+        <div class="container">
+            <div class="row bg-dark text-light p-2" *ngIf="!isEmpty(); else emptyMessage">
+                <div class="col">
+                    <h5>Key</h5>
+                </div>
+                <div class="col" *ngIf="editType == 'update'">
+                    <h5>Current Attributes</h5>
+                </div>
+                <div class="col">
+                    <h5>New Attributes</h5>
+                </div>
+            </div>
+            <ng-template #emptyMessage>
+                <div class="row p-2">
+                    <p>There doesn't seem to be anything here! Click the New+ button to begin.</p>
+                </div>
+            </ng-template>
+
+            <ng-container *ngFor="let delta of this.mappedItems.getFilteredDeltas(filters)">
+                <div class="row p-2 border-bottom">
+                    <div class="col">
+                        <div class="row" *ngFor="let definedKey of mappedItems.keyDefinitions">
+                            <div class="col" *ngIf="definedKey.label != undefined">
+                                <label class="col-form-label" [ngClass]="delta['delete'] == true ? 'strikethrough' : ''">
+                                    <h6>{{ definedKey.label }}</h6>
+                                </label>
+                            </div>
+                            <div class="col">
+                                <input 
+                                    type="text" readonly 
+                                    class="form-control-plaintext" 
+                                    value="{{ delta[definedKey.deltaSelector] }}"
+                                    [ngClass]="delta['delete'] == true ? 'strikethrough' : ''">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <button type="submit" class="btn btn-primary btn-block" (click)="toggleDelete(delta)">
+                                    {{ delta["delete"] ? 'Restore' : 'Delete' }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row" *ngFor="let definedField of mappedItems.fieldDefinitions">
+                            <div class="col">
+                                <label 
+                                    class="col-form-label" 
+                                    [ngClass]="delta['delete'] == true ? 'strikethrough' : ''"
+                                    *ngIf="mappedItems.getPrototype(delta) !== undefined">
+                                    <h6>{{ definedField.label }}</h6>
+                                </label>
+                            </div>
+                            <div class="col">
+                                <input 
+                                    *ngIf="mappedItems.getPrototype(delta) !== undefined"
+                                    type="text" readonly 
+                                    class="form-control-plaintext" 
+                                    value="{{ mappedItems.getPrototype(delta)[definedField.name] }}"
+                                    [ngClass]="delta['delete'] == true ? 'strikethrough' : ''">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row" *ngFor="let definedField of mappedItems.fieldDefinitions">
+                            <div class="col">
+                                <label class="col-form-label" [ngClass]="delta['delete'] == true ? 'strikethrough' : ''">
+                                    <h6>{{ definedField.label }}</h6>
+                                </label>
+                            </div>
+                            <div class="col">
+                                <input 
+                                    *ngIf="definedField.type == 'text'"
+                                    type="text" 
+                                    class="form-control" 
+                                    #validator="ngModel"
+                                    [(ngModel)]="delta[definedField.name]"
+                                    [ngClass]="delta['delete'] == true ? 'strikethrough' : ''">
+                                <resources-accordion-attribute-boolean 
+                                    *ngIf="definedField.type == 'boolean'"
+                                    [field]="definedField"
+                                    [isNew]="mappedItems.getPrototype(delta) === undefined"
+                                    [(ngModel)]="delta[definedField.name]"
+                                    [ngClass]="delta['delete'] == true ? 'strikethrough' : ''"
+                                    ></resources-accordion-attribute-boolean>
+                                <resources-accordion-attribute-select
+                                    *ngIf="definedField.type == 'select'"
+                                    [isNew]="mappedItems.getPrototype(delta) === undefined"
+                                    [field]="definedField"
+                                    [(ngModel)]="delta[definedField.name]"
+                                    [ngClass]="delta['delete'] == true ? 'strikethrough' : ''"
+                                    [items]="definedField.selectList"
+                                ></resources-accordion-attribute-select>
+                                <resources-accordion-attribute-number
+                                    *ngIf="definedField.type == 'number'"
+                                    [isNew]="mappedItems.getPrototype(delta) === undefined"
+                                    [field]="definedField"
+                                    [(ngModel)]="delta[definedField.name]"
+                                    [ngClass]="delta['delete'] == true ? 'strikethrough' : ''"
+                                    [minvalue]="definedField.min"
+                                    [maxvalue]="definedField.max"
+                                    [step]="definedField.step"></resources-accordion-attribute-number>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>
+
+<resources-new-item-modal
+    [title]="title"
+    [mappedItems]="mappedItems"
+    (create)="onNewItemCreate($event)"></resources-new-item-modal>

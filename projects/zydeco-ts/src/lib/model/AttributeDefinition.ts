@@ -12,6 +12,7 @@ export class AttributeDefinition {
     immutable:boolean = false;
     instructions:string = "";
     items:string[] = [];
+    filterable:boolean = false;
 }
 
 export class AttributeDefinitionBuilder {
@@ -85,6 +86,11 @@ export class AttributeDefinitionBuilder {
 
     withDeltaOnly() {
         this.deltaOnly = true;
+        return this;
+    }
+
+    withFilterable(filterable:boolean) {
+        this.attribute.filterable = filterable;
         return this;
     }
 
