@@ -9,3 +9,4 @@ export * from './lib/model/AttributeDefinition';
 export * from './lib/model/Breadcrumb';
 export * from './lib/model/ModelDefinition';
 export * from './lib/model/ObjectModel';
+export * from './lib/model/NestedAttributeDefinition';

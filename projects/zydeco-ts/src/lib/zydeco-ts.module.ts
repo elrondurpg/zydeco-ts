@@ -12,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { AttributesHeaderComponent } from './component/partial/attributes-header/attributes-header.component';
+import { NestedAttributeComponent } from './component/partial/nested-attribute/nested-attribute.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { AttributesHeaderComponent } from './component/partial/attributes-header
     SelectAttributeComponent,
     DateAttributeComponent,
     NumberAttributeComponent,
-    AttributesHeaderComponent
+    AttributesHeaderComponent,
+    NestedAttributeComponent
   ],
   imports: [
     BrowserModule,

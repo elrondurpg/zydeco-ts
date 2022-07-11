@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModelDefinition } from '../../../model/ModelDefinition';
+import { NestedAttributeDefinition } from '../../../model/NestedAttributeDefinition';
 import { ObjectModel } from '../../../model/ObjectModel';
 
 @Component({
@@ -22,6 +23,14 @@ export class AttributesComponent implements OnInit {
 
   toggleInstructions() {
     this.showInstructions = !this.showInstructions;
+  }
+
+  getFlatAttributes() {
+    return this.modelDefinition.attributes.filter(definition => definition.type != "nested");
+  }
+
+  getNestedAttributes() : NestedAttributeDefinition<any, any>[] {
+    return this.modelDefinition.attributes.filter(definition => definition instanceof NestedAttributeDefinition).map(definition => definition as NestedAttributeDefinition<any, any>);
   }
 
   getCurrentDeltaValue(selector:string) : any {
