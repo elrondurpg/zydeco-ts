@@ -104,6 +104,7 @@
                         <div class="row" *ngFor="let definedField of mappedItems.fieldDefinitions">
                             <div class="col">
                                 <label 
+                                
                                     class="col-form-label" 
                                     [ngClass]="delta['delete'] == true ? 'strikethrough' : ''"
                                     *ngIf="mappedItems.getPrototype(delta) !== undefined">
