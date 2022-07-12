@@ -31,6 +31,19 @@ export class NestedAttributeComponent implements OnInit {
     return this.attributeDefinition.keyDefinitions.filter(key => key.filterable);
   }
 
+  getFilteredDeltas() {
+    return this.deltas.filter(delta => {
+      Object.keys(this.filters).forEach(key => {
+        let filter = this.filters[key];
+        let value = delta[key as keyof typeof delta];
+        if (value instanceof String && value.toLowerCase().indexOf(filter.toLowerCase()) == -1) {
+          return false;
+        }
+      });
+      return true;
+    });
+  }
+
   isEmpty() {
     return this.models.length == 0 && this.deltas.length == 0;
   }

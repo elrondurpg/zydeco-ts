@@ -1,9 +1,14 @@
 export abstract class ObjectModel {
     
     ignoreProperties:string[] = [];
+    delete:boolean | undefined = undefined;
 
     abstract getDisplayName()   :string;
     abstract getId()            :any;
+
+    get(key:string) {
+        return this[key as keyof typeof this];
+    }
 
     isEmpty() {
         let key:string;
