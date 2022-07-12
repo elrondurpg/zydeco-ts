@@ -46,6 +46,35 @@
                 </div>
             </ng-template>
 
+            <ng-container *ngFor="let delta of getFilteredDeltas()">
+                <div class="row p-2 border-bottom">
+                    <div class="col">
+                        <div class="row" *ngFor="let keyDefinition of attributeDefinition.keyDefinitions">
+                            <div class="col">
+                                <label class="col-form-label" [ngClass]="delta.delete == true ? 'strikethrough' : ''">
+                                    <h6>{{ keyDefinition.title }}</h6>
+                                </label>
+                            </div>
+                            <div class="col">
+                                <input
+                                    type="text" readonly
+                                    class="form-control-plaintext"
+                                    value="{{ delta.get(keyDefinition.deltaSelector) }}"
+                                    [ngClass]="delta.delete == true ? 'strikethrough' : ''">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <button type="submit" class="btn btn-primary btn-block" (click)="delta.delete = !delta.delete">
+                                    {{ delta.delete ? 'Restore' : 'Delete' }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </ng-container>
+
             <ng-container *ngFor="let delta of this.mappedItems.getFilteredDeltas(filters)">
                 <div class="row p-2 border-bottom">
                     <div class="col">
