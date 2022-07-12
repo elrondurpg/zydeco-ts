@@ -1,6 +1,9 @@
+import { Attribute } from "@angular/core";
+import { AttributeType } from "../enum/AttributeType";
+
 export class AttributeDefinition {
     title:string = "";
-    type:string = "string";
+    type:AttributeType = AttributeType.STRING;
     modelSelector:string = "";
     deltaSelector:string = "";
     minlength:number = 0;
@@ -24,7 +27,7 @@ export class AttributeDefinitionBuilder {
         return this;
     }
 
-    withType(type:string) {
+    withType(type:AttributeType) {
         this.attribute.type = type;
         return this;
     }

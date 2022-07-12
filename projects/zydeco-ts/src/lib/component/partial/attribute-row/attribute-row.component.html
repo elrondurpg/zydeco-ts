@@ -1,0 +1,50 @@
+<div class="container">
+    <div class="row p-2">
+        <div class="col-sm-2">
+            {{ attributeDefinition.title }}
+        </div>
+    
+        <div class="col-sm-5" *ngIf="editType == 'update'">
+            {{ getFormattedCurrentValue() }}
+        </div>
+    
+        <div class="col-sm-5" *ngIf="editType == 'create' || !attributeDefinition.immutable">
+            <ng-container [ngSwitch]="attributeDefinition.type">
+                <zydeco-string-attribute *ngSwitchDefault
+                    [attributeDefinition]="attributeDefinition"
+                    [editType]="editType" 
+                    [ngModel]="delta.get(attributeDefinition.deltaSelector)"
+                    (ngModelChange)="delta.set(attributeDefinition.deltaSelector, $event)">
+                </zydeco-string-attribute>
+        
+                <zydeco-date-attribute *ngSwitchCase="AttributeType.DATE"
+                    [attributeDefinition]="attributeDefinition"
+                    [editType]="editType"
+                    [ngModel]="delta.get(attributeDefinition.deltaSelector)"
+                    (ngModelChange)="delta.set(attributeDefinition.deltaSelector, $event)">
+                </zydeco-date-attribute>
+        
+                <zydeco-select-attribute *ngSwitchCase="AttributeType.SELECT"
+                    [attributeDefinition]="attributeDefinition"
+                    [editType]="editType"
+                    [ngModel]="delta.get(attributeDefinition.deltaSelector)"
+                    (ngModelChange)="delta.set(attributeDefinition.deltaSelector, $event)">
+                </zydeco-select-attribute>
+        
+                <zydeco-boolean-attribute *ngSwitchCase="AttributeType.BOOLEAN"
+                    [attributeDefinition]="attributeDefinition"
+                    [editType]="editType"
+                    [ngModel]="delta.get(attributeDefinition.deltaSelector)"
+                    (ngModelChange)="delta.set(attributeDefinition.deltaSelector, $event)">
+                </zydeco-boolean-attribute>
+        
+                <zydeco-number-attribute *ngSwitchCase="AttributeType.NUMBER"
+                    [attributeDefinition]="attributeDefinition"
+                    [editType]="editType"
+                    [ngModel]="delta.get(attributeDefinition.deltaSelector)"
+                    (ngModelChange)="delta.set(attributeDefinition.deltaSelector, $event)">
+                </zydeco-number-attribute>
+            </ng-container>
+        </div>
+    </div>
+</div>

@@ -7,7 +7,34 @@ export abstract class ObjectModel {
     abstract getId()            :any;
 
     get(key:string) {
-        return this[key as keyof typeof this];
+        if (key != null && key.trim().length != 0) {
+            let tokens = key.split("\.");
+            let curr:any = this;
+            for (let i = 0; i < tokens.length; i++) {
+            if (curr != null) {
+                curr = curr[tokens[i]];
+            }
+            }
+            return curr;
+        }
+    }
+
+    set(key:string, value:any) {
+        if (key != null && key.trim().length != 0) {
+            let tokens = key.split("\.");
+            let curr:any = this;
+            for (let i = 0; i < tokens.length; i++) {
+                if (i == tokens.length - 1) {
+                    curr[tokens[i]] = value;
+                }
+                else {
+                    if (curr[tokens[i]] == null) {
+                        curr[tokens[i]] = {};
+                    }
+                    curr = curr[tokens[i]];
+                }
+            }
+        }
     }
 
     isEmpty() {

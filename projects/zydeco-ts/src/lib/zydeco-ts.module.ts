@@ -13,6 +13,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { AttributesHeaderComponent } from './component/partial/attributes-header/attributes-header.component';
 import { NestedAttributeComponent } from './component/partial/nested-attribute/nested-attribute.component';
+import { AttributeRowComponent } from './component/partial/attribute-row/attribute-row.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { NestedAttributeComponent } from './component/partial/nested-attribute/n
     DateAttributeComponent,
     NumberAttributeComponent,
     AttributesHeaderComponent,
-    NestedAttributeComponent
+    NestedAttributeComponent,
+    AttributeRowComponent
   ],
   imports: [
     BrowserModule,

@@ -1,32 +1,18 @@
-<div class="container">
-    <div class="row p-2">
-        <div class="col-sm-2">
-            {{ attributeDefinition.title }}
-        </div>
-    
-        <div class="col-sm-5" *ngIf="editType == 'update'">
-            {{ currentValue }}
-        </div>
-    
-        <div class="col-sm-5" *ngIf="editType == 'create' || !attributeDefinition.immutable">
-            <input 
-                type="text" 
-                class="form-control" 
-                [(ngModel)]="updatedValue" 
-                [minlength]="attributeDefinition.minlength" 
-                [maxlength]="attributeDefinition.maxlength" 
-                [required]="attributeDefinition.required && editType == 'create'"
-                #validator="ngModel"
-                [ngClass]="validator.invalid && (validator.dirty || validator.touched) ? 'is-invalid' : ''">
-            <div class="invalid-feedback" *ngIf="validator.errors && validator.errors['minlength']">
-                {{ attributeDefinition.title }} must be at least {{ attributeDefinition.minlength }} characters long.
-            </div>   
-            <div class="invalid-feedback" *ngIf="validator.errors && validator.errors['maxlength']">
-                {{ attributeDefinition.title }} must be no more than {{ attributeDefinition.maxlength }} characters long.
-            </div>   
-            <div class="invalid-feedback" *ngIf="validator.errors && validator.errors['required']">
-                Please provide a value for {{ attributeDefinition.title }}.
-            </div>   
-        </div>
-    </div>
-</div>
+<input 
+    type="text" 
+    class="form-control" 
+    [(ngModel)]="updatedValue" 
+    [minlength]="attributeDefinition.minlength" 
+    [maxlength]="attributeDefinition.maxlength" 
+    [required]="attributeDefinition.required && editType == 'create'"
+    #validator="ngModel"
+    [ngClass]="validator.invalid && (validator.dirty || validator.touched) ? 'is-invalid' : ''">
+<div class="invalid-feedback" *ngIf="validator.errors && validator.errors['minlength']">
+    {{ attributeDefinition.title }} must be at least {{ attributeDefinition.minlength }} characters long.
+</div>   
+<div class="invalid-feedback" *ngIf="validator.errors && validator.errors['maxlength']">
+    {{ attributeDefinition.title }} must be no more than {{ attributeDefinition.maxlength }} characters long.
+</div>   
+<div class="invalid-feedback" *ngIf="validator.errors && validator.errors['required']">
+    Please provide a value for {{ attributeDefinition.title }}.
+</div>   

@@ -71,95 +71,70 @@
                             </div>
                         </div>
                     </div>
-
-                </div>
-            </ng-container>
-
-            <ng-container *ngFor="let delta of this.mappedItems.getFilteredDeltas(filters)">
-                <div class="row p-2 border-bottom">
                     <div class="col">
-                        <div class="row" *ngFor="let definedKey of mappedItems.keyDefinitions">
-                            <div class="col" *ngIf="definedKey.label != undefined">
-                                <label class="col-form-label" [ngClass]="delta['delete'] == true ? 'strikethrough' : ''">
-                                    <h6>{{ definedKey.label }}</h6>
-                                </label>
-                            </div>
-                            <div class="col">
-                                <input 
-                                    type="text" readonly 
-                                    class="form-control-plaintext" 
-                                    value="{{ delta[definedKey.deltaSelector] }}"
-                                    [ngClass]="delta['delete'] == true ? 'strikethrough' : ''">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <button type="submit" class="btn btn-primary btn-block" (click)="toggleDelete(delta)">
-                                    {{ delta["delete"] ? 'Restore' : 'Delete' }}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="row" *ngFor="let definedField of mappedItems.fieldDefinitions">
+                        <div class="row" *ngFor="let fieldDefinition of attributeDefinition.fieldDefinitions">
                             <div class="col">
                                 <label 
-                                
                                     class="col-form-label" 
-                                    [ngClass]="delta['delete'] == true ? 'strikethrough' : ''"
-                                    *ngIf="mappedItems.getPrototype(delta) !== undefined">
-                                    <h6>{{ definedField.label }}</h6>
+                                    [ngClass]="delta.delete == true ? 'strikethrough' : ''"
+                                    *ngIf="findMatchingModel(delta)">
+                                    <h6>{{ fieldDefinition.title }}</h6>
                                 </label>
                             </div>
                             <div class="col">
                                 <input 
-                                    *ngIf="mappedItems.getPrototype(delta) !== undefined"
+                                    *ngIf="findMatchingModel(delta); let model"
                                     type="text" readonly 
                                     class="form-control-plaintext" 
-                                    value="{{ mappedItems.getPrototype(delta)[definedField.name] }}"
-                                    [ngClass]="delta['delete'] == true ? 'strikethrough' : ''">
+                                    value="{{ model.get(fieldDefinition.modelSelector) }}"
+                                    [ngClass]="delta.delete == true ? 'strikethrough' : ''">
                             </div>
                         </div>
                     </div>
                     <div class="col">
-                        <div class="row" *ngFor="let definedField of mappedItems.fieldDefinitions">
+                        <div class="row" *ngFor="let fieldDefinition of attributeDefinition.fieldDefinitions">
                             <div class="col">
-                                <label class="col-form-label" [ngClass]="delta['delete'] == true ? 'strikethrough' : ''">
-                                    <h6>{{ definedField.label }}</h6>
+                                <label class="col-form-label" [ngClass]="delta.delete == true ? 'strikethrough' : ''">
+                                    <h6>{{ fieldDefinition.title }}</h6>
                                 </label>
                             </div>
                             <div class="col">
-                                <input 
-                                    *ngIf="definedField.type == 'text'"
-                                    type="text" 
-                                    class="form-control" 
-                                    #validator="ngModel"
-                                    [(ngModel)]="delta[definedField.name]"
-                                    [ngClass]="delta['delete'] == true ? 'strikethrough' : ''">
-                                <resources-accordion-attribute-boolean 
-                                    *ngIf="definedField.type == 'boolean'"
-                                    [field]="definedField"
-                                    [isNew]="mappedItems.getPrototype(delta) === undefined"
-                                    [(ngModel)]="delta[definedField.name]"
-                                    [ngClass]="delta['delete'] == true ? 'strikethrough' : ''"
-                                    ></resources-accordion-attribute-boolean>
-                                <resources-accordion-attribute-select
-                                    *ngIf="definedField.type == 'select'"
-                                    [isNew]="mappedItems.getPrototype(delta) === undefined"
-                                    [field]="definedField"
-                                    [(ngModel)]="delta[definedField.name]"
-                                    [ngClass]="delta['delete'] == true ? 'strikethrough' : ''"
-                                    [items]="definedField.selectList"
-                                ></resources-accordion-attribute-select>
-                                <resources-accordion-attribute-number
-                                    *ngIf="definedField.type == 'number'"
-                                    [isNew]="mappedItems.getPrototype(delta) === undefined"
-                                    [field]="definedField"
-                                    [(ngModel)]="delta[definedField.name]"
-                                    [ngClass]="delta['delete'] == true ? 'strikethrough' : ''"
-                                    [minvalue]="definedField.min"
-                                    [maxvalue]="definedField.max"
-                                    [step]="definedField.step"></resources-accordion-attribute-number>
+                                <ng-container [ngSwitch]="fieldDefinition.type">
+                                    <zydeco-string-attribute *ngSwitchCase="AttributeType.STRING"
+                                        [attributeDefinition]="fieldDefinition"
+                                        [editType]="findMatchingModel(delta) != undefined ? 'update' : 'create'") 
+                                        [ngModel]="delta.get(fieldDefinition.deltaSelector)"
+                                        (ngModelChange)="delta.set(fieldDefinition.deltaSelector, $event)">
+                                    </zydeco-string-attribute>
+                            
+                                    <zydeco-date-attribute *ngSwitchCase="AttributeType.DATE"
+                                        [attributeDefinition]="fieldDefinition"
+                                        [editType]="findMatchingModel(delta) != undefined ? 'update' : 'create'") 
+                                        [ngModel]="delta.get(fieldDefinition.deltaSelector)"
+                                        (ngModelChange)="delta.set(fieldDefinition.deltaSelector, $event)">
+                                    </zydeco-date-attribute>
+                            
+                                    <zydeco-select-attribute *ngSwitchCase="AttributeType.SELECT"
+                                        [attributeDefinition]="fieldDefinition"
+                                        [editType]="findMatchingModel(delta) != undefined ? 'update' : 'create'") 
+                                        [ngModel]="delta.get(fieldDefinition.deltaSelector)"
+                                        (ngModelChange)="delta.set(fieldDefinition.deltaSelector, $event)">
+                                    </zydeco-select-attribute>
+                            
+                                    <zydeco-boolean-attribute *ngSwitchCase="AttributeType.BOOLEAN"
+                                        [attributeDefinition]="fieldDefinition"
+                                        [editType]="findMatchingModel(delta) != undefined ? 'update' : 'create'") 
+                                        [ngModel]="delta.get(fieldDefinition.deltaSelector)"
+                                        (ngModelChange)="delta.set(fieldDefinition.deltaSelector, $event)">
+                                    </zydeco-boolean-attribute>
+                            
+                                    <zydeco-number-attribute *ngSwitchCase="AttributeType.NUMBER"
+                                        [attributeDefinition]="fieldDefinition"
+                                        [editType]="findMatchingModel(delta) != undefined ? 'update' : 'create'") 
+                                        [ngModel]="delta.get(fieldDefinition.deltaSelector)"
+                                        (ngModelChange)="delta.set(fieldDefinition.deltaSelector, $event)">
+                                    </zydeco-number-attribute>
+                                </ng-container>
                             </div>
                         </div>
                     </div>
@@ -169,7 +144,7 @@
     </div>
 </div>
 
-<resources-new-item-modal
+<!--resources-new-item-modal
     [title]="title"
     [mappedItems]="mappedItems"
-    (create)="onNewItemCreate($event)"></resources-new-item-modal>
+    (create)="onNewItemCreate($event)"></resources-new-item-modal-->

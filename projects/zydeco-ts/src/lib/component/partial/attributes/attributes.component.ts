@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { AttributeType } from '../../../enum/AttributeType';
 import { ModelDefinition } from '../../../model/ModelDefinition';
 import { NestedAttributeDefinition } from '../../../model/NestedAttributeDefinition';
 import { ObjectModel } from '../../../model/ObjectModel';
@@ -16,7 +17,8 @@ export class AttributesComponent implements OnInit {
 
   showInstructions:boolean = true;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }
@@ -26,34 +28,11 @@ export class AttributesComponent implements OnInit {
   }
 
   getFlatAttributes() {
-    return this.modelDefinition.attributes.filter(definition => definition.type != "nested");
+    return this.modelDefinition.attributes.filter(definition => definition.type != AttributeType.NESTED);
   }
 
   getNestedAttributes() : NestedAttributeDefinition<any, any>[] {
     return this.modelDefinition.attributes.filter(definition => definition instanceof NestedAttributeDefinition).map(definition => definition as NestedAttributeDefinition<any, any>);
-  }
-
-  getCurrentDeltaValue(selector:string) : any {
-    return this.delta[selector as keyof typeof this.delta];
-  }
-
-  setCurrentDeltaValue(selector:string, value:any) {
-    this.delta[selector as keyof typeof this.delta] = value;
-  }
-
-  getCurrentModelValue(selector:string) {
-    if (selector == null) {
-      return null;
-    }
-
-    let tokens = selector.split("\.");
-    let curr:any = this.model;
-    for (let i = 0; i < tokens.length; i++) {
-      if (curr != null) {
-        curr = curr[tokens[i]];
-      }
-    }
-    return curr;
   }
 
 }

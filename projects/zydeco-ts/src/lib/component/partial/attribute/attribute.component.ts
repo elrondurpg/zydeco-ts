@@ -1,5 +1,7 @@
+import { formatDate } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { ControlValueAccessor } from "@angular/forms";
+import { AttributeType } from '../../../enum/AttributeType';
 import { AttributeDefinition } from '../../../model/AttributeDefinition';
 
 @Component({
@@ -9,7 +11,6 @@ import { AttributeDefinition } from '../../../model/AttributeDefinition';
 export abstract class AttributeComponent implements ControlValueAccessor, OnInit {
 
   @Input() attributeDefinition! :AttributeDefinition;
-  @Input() currentValue!        :string;
   @Input() editType!            :string;
 
   protected _updatedValue :any = undefined;

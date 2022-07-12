@@ -1,33 +1,19 @@
-<div class="container">
-    <div class="row p-2">
-        <div class="col-sm-2">
-            {{ attributeDefinition.title }}
-        </div>
-    
-        <div class="col-sm-5" *ngIf="editType == 'update'">
-            {{ currentValue != null ? currentValue : '' }}
-        </div>
-    
-        <div class="col-sm-5" *ngIf="editType == 'create' || !attributeDefinition.immutable">
-            <input 
-                type="number" 
-                step="attributeDefinition.step"
-                class="form-control" 
-                [(ngModel)]="updatedValue"
-                [min]="attributeDefinition.minvalue"
-                [max]="attributeDefinition.maxvalue"
-                [required]="attributeDefinition.required && editType == 'create'"
-                #validator="ngModel"
-                [ngClass]="validator.invalid && (validator.dirty || validator.touched) ? 'is-invalid' : ''">               
-            <div class="invalid-feedback" *ngIf="validator.errors && validator.errors['min']">
-                {{ attributeDefinition.title }} must be at least {{ attributeDefinition.minvalue }}.
-            </div>   
-            <div class="invalid-feedback" *ngIf="validator.errors && validator.errors['max']">
-                {{ attributeDefinition.title }} must be no more than {{ attributeDefinition.maxvalue }}.
-            </div>   
-            <div class="invalid-feedback" *ngIf="validator.errors && validator.errors['required']">
-                Please provide a value for {{ attributeDefinition.title }}.
-            </div>   
-        </div>
-    </div>
-</div>
+<input 
+    type="number" 
+    step="attributeDefinition.step"
+    class="form-control" 
+    [(ngModel)]="updatedValue"
+    [min]="attributeDefinition.minvalue"
+    [max]="attributeDefinition.maxvalue"
+    [required]="attributeDefinition.required && editType == 'create'"
+    #validator="ngModel"
+    [ngClass]="validator.invalid && (validator.dirty || validator.touched) ? 'is-invalid' : ''">               
+<div class="invalid-feedback" *ngIf="validator.errors && validator.errors['min']">
+    {{ attributeDefinition.title }} must be at least {{ attributeDefinition.minvalue }}.
+</div>   
+<div class="invalid-feedback" *ngIf="validator.errors && validator.errors['max']">
+    {{ attributeDefinition.title }} must be no more than {{ attributeDefinition.maxvalue }}.
+</div>   
+<div class="invalid-feedback" *ngIf="validator.errors && validator.errors['required']">
+    Please provide a value for {{ attributeDefinition.title }}.
+</div>   
