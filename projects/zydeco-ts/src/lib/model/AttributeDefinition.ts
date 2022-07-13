@@ -1,3 +1,4 @@
+import { Observable } from "rxjs";
 import { AttributeType } from "../enum/AttributeType";
 
 export class AttributeDefinition {
@@ -14,7 +15,19 @@ export class AttributeDefinition {
     immutable:boolean = false;
     instructions:string = "";
     items:string[] = [];
+    itemsObservable!:Observable<any>;
     filterable:boolean = false;
+
+    refreshItems() {
+        if (this.itemsObservable != undefined) {
+            this.itemsObservable.subscribe(items => {
+                console.log("getting refreshed items");
+                console.log(items);
+                this.items.length = 0;
+                this.items.push(...items);
+            });
+        }
+    }
 }
 
 export class AttributeDefinitionBuilder {
@@ -43,6 +56,16 @@ export class AttributeDefinitionBuilder {
 
     withItems(items:string[]) {
         this.attributeDefinition.items = items;
+        return this;
+    }
+
+    withItemsFromObservable(observable:Observable<any>) {
+        this.attributeDefinition.itemsObservable = observable;
+        observable.subscribe(items => {
+            console.log("getting initial items");
+            console.log(items);
+            this.attributeDefinition.items.push(...items)
+        });
         return this;
     }
 

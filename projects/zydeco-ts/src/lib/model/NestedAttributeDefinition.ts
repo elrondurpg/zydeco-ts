@@ -8,10 +8,16 @@ export class NestedAttributeDefinition<ModelClass extends ObjectModel, DeltaClas
     fieldDefinitions:AttributeDefinition[] = [];
 
     constructor(
-        protected modelClass : new () => ModelClass, 
-        protected deltaClass : new () => DeltaClass) {
+        public modelClass : new () => ModelClass, 
+        public deltaClass : new () => DeltaClass) {
         super();
         this.type = AttributeType.NESTED;
+    }
+
+    override refreshItems(): void {
+        super.refreshItems();
+        this.keyDefinitions.forEach(keyDefinition => keyDefinition.refreshItems());
+        this.fieldDefinitions.forEach(fieldDefinition => fieldDefinition.refreshItems());
     }
 
     createDeltaClone(model:ModelClass) :DeltaClass {
@@ -23,6 +29,10 @@ export class NestedAttributeDefinition<ModelClass extends ObjectModel, DeltaClas
         });
 
         return delta;
+    }
+
+    createDelta() {
+        return new this.deltaClass();
     }
 }
 

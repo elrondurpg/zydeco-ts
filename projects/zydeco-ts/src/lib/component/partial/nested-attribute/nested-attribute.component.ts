@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { plainToClass } from 'class-transformer';
 import { AttributeType } from '../../../enum/AttributeType';
 import { NestedAttributeDefinition } from '../../../model/NestedAttributeDefinition';
 import { ObjectModel } from '../../../model/ObjectModel';
@@ -106,6 +107,11 @@ export class NestedAttributeComponent implements OnInit {
       else delta.delete = true;
     }
   }
+
+  addDelta(delta:ObjectModel) {
+    delta = plainToClass(this.attributeDefinition.deltaClass, delta);
+    this.deltas.push(delta);
+}
 
   removeDelta(deltaToRemove:ObjectModel) {
     let index = -1;

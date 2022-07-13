@@ -147,7 +147,7 @@
     </div>
 </div>
 
-<!--resources-new-item-modal
-    [title]="title"
-    [mappedItems]="mappedItems"
-    (create)="onNewItemCreate($event)"></resources-new-item-modal-->
+<zydeco-create-nested-object
+    [attributeDefinition]="attributeDefinition"
+    [deltas]="deltas"
+    (create)="addDelta($event)"></zydeco-create-nested-object>

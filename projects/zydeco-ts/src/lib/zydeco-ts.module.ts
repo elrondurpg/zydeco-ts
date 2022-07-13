@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 import { AttributesHeaderComponent } from './component/partial/attributes-header/attributes-header.component';
 import { NestedAttributeComponent } from './component/partial/nested-attribute/nested-attribute.component';
 import { AttributeRowComponent } from './component/partial/attribute-row/attribute-row.component';
+import { CreateNestedObjectComponent } from './component/modal/create-nested-object/create-nested-object.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { AttributeRowComponent } from './component/partial/attribute-row/attribu
     NumberAttributeComponent,
     AttributesHeaderComponent,
     NestedAttributeComponent,
-    AttributeRowComponent
+    AttributeRowComponent,
+    CreateNestedObjectComponent
   ],
   imports: [
     CommonModule,
