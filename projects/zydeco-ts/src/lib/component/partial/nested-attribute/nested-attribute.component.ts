@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AttributeDefinition } from 'zydeco-ts';
 import { AttributeType } from '../../../enum/AttributeType';
 import { NestedAttributeDefinition } from '../../../model/NestedAttributeDefinition';
 import { ObjectModel } from '../../../model/ObjectModel';
@@ -66,17 +65,19 @@ export class NestedAttributeComponent implements OnInit {
     else return "";
   }
 
-  getFilterableKeys() {
-    return this.attributeDefinition.keyDefinitions.filter(key => key.filterable);
+  sortKeys() {
+    return this.attributeDefinition.keyDefinitions.sort((a, b) => {
+      return a.filterable == b.filterable? 0 : (a.filterable? -1 : 1);
+    });
   }
 
-  getFilteredDeltas() {
+  getFilteredDeltas():ObjectModel[] {
     return this.deltas.filter(delta => {
       let match = true;
       Object.keys(this.filters).forEach(key => {
         let filter = this.filters[key];
         let value = delta.get(key);
-        if (value instanceof String && value.toLowerCase().indexOf(filter.toLowerCase()) == -1) {
+        if (typeof value == "string" && value.toLowerCase().indexOf(filter.toLowerCase()) == -1) {
           match = false;
         }
       });
@@ -92,6 +93,34 @@ export class NestedAttributeComponent implements OnInit {
       return 0;
     });
   }
+
+  toggleDelete(delta:ObjectModel) {
+    let model = this.findMatchingModel(delta);
+    if (model === undefined) {
+      this.removeDelta(delta);
+    }
+    else {
+      if (delta.delete) {
+        delta.delete = undefined;
+      }
+      else delta.delete = true;
+    }
+  }
+
+  removeDelta(deltaToRemove:ObjectModel) {
+    let index = -1;
+    for (let i = 0; i < this.deltas.length; i++) {
+        let delta = this.deltas[i];
+        if (this.attributeDefinition.keyDefinitions.find(keyDefinition => {
+            return deltaToRemove.get(keyDefinition.deltaSelector) != delta.get(keyDefinition.deltaSelector);
+        }) == undefined) {
+            index = i;
+        }
+    }
+    if (index != -1) {
+        this.deltas.splice(index, 1);
+    }
+}
 
   isEmpty() {
     return this.models.length == 0 && this.deltas.length == 0;

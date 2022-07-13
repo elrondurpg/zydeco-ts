@@ -1,20 +1,17 @@
 import { plainToClass } from 'class-transformer';
 import { AttributeType } from '../enum/AttributeType';
-import { AttributeDefinition } from './AttributeDefinition';
+import { AttributeDefinition, AttributeDefinitionBuilder } from './AttributeDefinition';
 import { ObjectModel } from './ObjectModel';
 
 export class NestedAttributeDefinition<ModelClass extends ObjectModel, DeltaClass extends ObjectModel> extends AttributeDefinition {
+    keyDefinitions:AttributeDefinition[] = [];
+    fieldDefinitions:AttributeDefinition[] = [];
+
     constructor(
         protected modelClass : new () => ModelClass, 
-        protected deltaClass : new () => DeltaClass,
-        public keyDefinitions:AttributeDefinition[],
-        public fieldDefinitions:AttributeDefinition[],
-        modelSelector:string,
-        deltaSelector:string) {
+        protected deltaClass : new () => DeltaClass) {
         super();
         this.type = AttributeType.NESTED;
-        this.modelSelector = modelSelector;
-        this.deltaSelector = deltaSelector;
     }
 
     createDeltaClone(model:ModelClass) :DeltaClass {
@@ -26,5 +23,25 @@ export class NestedAttributeDefinition<ModelClass extends ObjectModel, DeltaClas
         });
 
         return delta;
+    }
+}
+
+export class NestedAttributeDefinitionBuilder<ModelClass extends ObjectModel, DeltaClass extends ObjectModel> extends AttributeDefinitionBuilder {
+    override attributeDefinition!:NestedAttributeDefinition<ModelClass, DeltaClass>;
+
+    constructor(protected modelClass : new () => ModelClass, 
+    protected deltaClass : new () => DeltaClass) {
+        super();
+        this.attributeDefinition = new NestedAttributeDefinition<ModelClass, DeltaClass>(modelClass, deltaClass);
+    }
+
+    withKeyDefinitions(keyDefinitions:AttributeDefinition[]) {
+        this.attributeDefinition.keyDefinitions = keyDefinitions;
+        return this;
+    }
+
+    withFieldDefinitions(fieldDefinitions:AttributeDefinition[]) {
+        this.attributeDefinition.fieldDefinitions = fieldDefinitions;
+        return this;
     }
 }

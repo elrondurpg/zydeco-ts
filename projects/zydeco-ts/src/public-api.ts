@@ -10,3 +10,4 @@ export * from './lib/model/Breadcrumb';
 export * from './lib/model/ModelDefinition';
 export * from './lib/model/ObjectModel';
 export * from './lib/model/NestedAttributeDefinition';
+export * from './lib/enum/AttributeType';

@@ -1,4 +1,3 @@
-import { Attribute } from "@angular/core";
 import { AttributeType } from "../enum/AttributeType";
 
 export class AttributeDefinition {
@@ -19,71 +18,71 @@ export class AttributeDefinition {
 }
 
 export class AttributeDefinitionBuilder {
-    attribute:AttributeDefinition = new AttributeDefinition();
+    attributeDefinition:AttributeDefinition = new AttributeDefinition();
     deltaOnly:boolean = false;
 
     withTitle(title:string) {
-        this.attribute.title = title;
+        this.attributeDefinition.title = title;
         return this;
     }
 
     withType(type:AttributeType) {
-        this.attribute.type = type;
+        this.attributeDefinition.type = type;
         return this;
     }
 
     withModelSelector(modelSelector:string) {
-        this.attribute.modelSelector = modelSelector;
+        this.attributeDefinition.modelSelector = modelSelector;
         return this;
     }
 
     withDeltaSelector(deltaSelector:string) {
-        this.attribute.deltaSelector = deltaSelector;
+        this.attributeDefinition.deltaSelector = deltaSelector;
         return this;
     }
 
     withItems(items:string[]) {
-        this.attribute.items = items;
+        this.attributeDefinition.items = items;
         return this;
     }
 
     withMinLength(minlength:number) {
-        this.attribute.minlength = minlength;
+        this.attributeDefinition.minlength = minlength;
         return this;
     }
 
     withMaxLength(maxlength:number) {
-        this.attribute.maxlength = maxlength;
+        this.attributeDefinition.maxlength = maxlength;
         return this;
     }
 
     withMinValue(minvalue:number) {
-        this.attribute.minvalue = minvalue;
+        this.attributeDefinition.minvalue = minvalue;
         return this;
     }
 
     withMaxValue(maxvalue:number) {
-        this.attribute.maxvalue = maxvalue;
+        this.attributeDefinition.maxvalue = maxvalue;
         return this;
     }
 
     withStep(step:number) {
-        this.attribute.step = step;
+        this.attributeDefinition.step = step;
         return this;
     }
 
     withRequired(required:boolean) {
-        this.attribute.required = required;
+        this.attributeDefinition.required = required;
         return this;
     }
 
     withImmutable(immutable:boolean) {
-        this.attribute.immutable = immutable;
+        this.attributeDefinition.immutable = immutable;
         return this;
     }
 
     withInstructions(instructions:string) {
-        this.attribute.instructions = instructions;
+        this.attributeDefinition.instructions = instructions;
         return this;
     }
 
@@ -93,20 +92,20 @@ export class AttributeDefinitionBuilder {
     }
 
     withFilterable(filterable:boolean) {
-        this.attribute.filterable = filterable;
+        this.attributeDefinition.filterable = filterable;
         return this;
     }
 
     build() {
-        if (this.attribute.title != null) {
-            if (this.attribute.modelSelector == null && !this.deltaOnly) {
-                this.attribute.modelSelector = (this.attribute.title[0].toLowerCase() + this.attribute.title.substring(1)).replace(" ", "");
+        if (this.attributeDefinition.title != null) {
+            if (this.attributeDefinition.modelSelector == "" && !this.deltaOnly) {
+                this.attributeDefinition.modelSelector = (this.attributeDefinition.title[0].toLowerCase() + this.attributeDefinition.title.substring(1)).replace(" ", "");
             }
-            if (this.attribute.deltaSelector == null) {
-                this.attribute.deltaSelector = (this.attribute.title[0].toLowerCase() + this.attribute.title.substring(1)).replace(" ", "");
+            if (this.attributeDefinition.deltaSelector == "") {
+                this.attributeDefinition.deltaSelector = (this.attributeDefinition.title[0].toLowerCase() + this.attributeDefinition.title.substring(1)).replace(" ", "");
             }
         }
 
-        return this.attribute;
+        return this.attributeDefinition;
     }
 }

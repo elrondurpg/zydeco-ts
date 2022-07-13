@@ -1,35 +1,38 @@
 <div class="accordion" [id]="getCollapsedTitle() + 'Accordion'">
     <div class="card-header" id="headingOne">
-        <div class="row" *ngFor="let attribute of getFilterableKeys(); let i = index">
-            <div class="col-sm-4">
-                <button *ngIf="i == 1" class="btn btn-link" type="button" data-toggle="collapse" [attr.data-target]="'#' + getCollapsedTitle() + 'Collapse'" aria-expanded="true" [attr.aria-controls]="getCollapsedTitle() + 'Collapse'">
-                    {{ attributeDefinition.title }}
-                </button>
-            </div>
-            <div class="col-sm-4">
-                <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="filters[attribute.deltaSelector]"
-                    [placeholder]="'Filter ' + attribute.title" />
-            </div>
-            <div class="col-sm-2">
-                <!--button *ngIf="attribute.importable && i == 1" type="button" class="btn btn-primary btn-block"  data-toggle="modal" [attr.data-target]="'#bulkImport' + getTitle() + 'Modal'">
-                    Bulk Import
-                </button-->
-            </div>
-            <div class="col-sm-2">
-                <button *ngIf="i == 1" type="button" class="btn btn-primary btn-block"  data-toggle="modal" [attr.data-target]="'#new' + getCollapsedTitle() + 'Modal'">
-                    + New
-                </button>
-            </div>
+        <div class="row" *ngFor="let key of sortKeys(); let i = index">
+            <ng-container *ngIf="i == 0 || key.filterable">
+                <div class="col-sm-4">
+                    <button *ngIf="i == 0" class="btn btn-link" type="button" data-toggle="collapse" [attr.data-target]="'#' + getCollapsedTitle() + 'Collapse'" aria-expanded="true" [attr.aria-controls]="getCollapsedTitle() + 'Collapse'">
+                        {{ attributeDefinition.title }}
+                    </button>
+                </div>
+                <div class="col-sm-4">
+                    <input
+                        *ngIf="key.filterable"
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="filters[key.deltaSelector]"
+                        [placeholder]="'Filter ' + key.title" />
+                </div>
+                <div class="col-sm-2">
+                    <!--button *ngIf="attribute.importable && i == 0" type="button" class="btn btn-primary btn-block"  data-toggle="modal" [attr.data-target]="'#bulkImport' + getTitle() + 'Modal'">
+                        Bulk Import
+                    </button-->
+                </div>
+                <div class="col-sm-2">
+                    <button *ngIf="i == 0" type="button" class="btn btn-primary btn-block"  data-toggle="modal" [attr.data-target]="'#new' + getCollapsedTitle() + 'Modal'">
+                        + New
+                    </button>
+                </div>
+            </ng-container>
         </div>
     </div>
 
     <div [id]="getCollapsedTitle() + 'Collapse'" class="collapse" aria-labelledby="headingOne" [attr.data-parent]="'#' + getCollapsedTitle() + 'Accordion'">
 
         <div class="container">
-            <div class="row bg-dark text-light p-2" *ngIf="!isEmpty(); else emptyMessage">
+            <div class="row bg-dark text-light p-2" *ngIf="getFilteredDeltas().length > 0; else emptyMessage">
                 <div class="col">
                     <h5>Key</h5>
                 </div>
@@ -42,7 +45,7 @@
             </div>
             <ng-template #emptyMessage>
                 <div class="row p-2">
-                    <p>There doesn't seem to be anything here! Click the New+ button to begin.</p>
+                    <p>There doesn't seem to be anything here! Check your search filters or click the New+ button to begin.</p>
                 </div>
             </ng-template>
 
@@ -65,7 +68,7 @@
                         </div>
                         <div class="row">
                             <div class="col">
-                                <button type="submit" class="btn btn-primary btn-block" (click)="delta.delete = !delta.delete">
+                                <button type="submit" class="btn btn-primary btn-block" (click)="toggleDelete(delta)">
                                     {{ delta.delete ? 'Restore' : 'Delete' }}
                                 </button>
                             </div>
@@ -102,35 +105,35 @@
                                 <ng-container [ngSwitch]="fieldDefinition.type">
                                     <zydeco-string-attribute *ngSwitchCase="AttributeType.STRING"
                                         [attributeDefinition]="fieldDefinition"
-                                        [editType]="findMatchingModel(delta) != undefined ? 'update' : 'create'") 
+                                        [editType]="findMatchingModel(delta) != undefined ? 'update' : 'create'"
                                         [ngModel]="delta.get(fieldDefinition.deltaSelector)"
                                         (ngModelChange)="delta.set(fieldDefinition.deltaSelector, $event)">
                                     </zydeco-string-attribute>
                             
                                     <zydeco-date-attribute *ngSwitchCase="AttributeType.DATE"
                                         [attributeDefinition]="fieldDefinition"
-                                        [editType]="findMatchingModel(delta) != undefined ? 'update' : 'create'") 
+                                        [editType]="findMatchingModel(delta) != undefined ? 'update' : 'create'"
                                         [ngModel]="delta.get(fieldDefinition.deltaSelector)"
                                         (ngModelChange)="delta.set(fieldDefinition.deltaSelector, $event)">
                                     </zydeco-date-attribute>
                             
                                     <zydeco-select-attribute *ngSwitchCase="AttributeType.SELECT"
                                         [attributeDefinition]="fieldDefinition"
-                                        [editType]="findMatchingModel(delta) != undefined ? 'update' : 'create'") 
+                                        [editType]="findMatchingModel(delta) != undefined ? 'update' : 'create'"
                                         [ngModel]="delta.get(fieldDefinition.deltaSelector)"
                                         (ngModelChange)="delta.set(fieldDefinition.deltaSelector, $event)">
                                     </zydeco-select-attribute>
                             
                                     <zydeco-boolean-attribute *ngSwitchCase="AttributeType.BOOLEAN"
                                         [attributeDefinition]="fieldDefinition"
-                                        [editType]="findMatchingModel(delta) != undefined ? 'update' : 'create'") 
+                                        [editType]="findMatchingModel(delta) != undefined ? 'update' : 'create'"
                                         [ngModel]="delta.get(fieldDefinition.deltaSelector)"
                                         (ngModelChange)="delta.set(fieldDefinition.deltaSelector, $event)">
                                     </zydeco-boolean-attribute>
                             
                                     <zydeco-number-attribute *ngSwitchCase="AttributeType.NUMBER"
                                         [attributeDefinition]="fieldDefinition"
-                                        [editType]="findMatchingModel(delta) != undefined ? 'update' : 'create'") 
+                                        [editType]="findMatchingModel(delta) != undefined ? 'update' : 'create'"
                                         [ngModel]="delta.get(fieldDefinition.deltaSelector)"
                                         (ngModelChange)="delta.set(fieldDefinition.deltaSelector, $event)">
                                     </zydeco-number-attribute>

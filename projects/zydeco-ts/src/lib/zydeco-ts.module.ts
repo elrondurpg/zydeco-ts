@@ -9,7 +9,6 @@ import { SelectAttributeComponent } from './component/partial/select-attribute/s
 import { DateAttributeComponent } from './component/partial/date-attribute/date-attribute.component';
 import { NumberAttributeComponent } from './component/partial/number-attribute/number-attribute.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { AttributesHeaderComponent } from './component/partial/attributes-header/attributes-header.component';
 import { NestedAttributeComponent } from './component/partial/nested-attribute/nested-attribute.component';
@@ -31,7 +30,6 @@ import { AttributeRowComponent } from './component/partial/attribute-row/attribu
     AttributeRowComponent
   ],
   imports: [
-    BrowserModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule

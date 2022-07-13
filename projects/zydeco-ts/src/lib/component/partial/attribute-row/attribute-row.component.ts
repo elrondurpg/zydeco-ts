@@ -27,7 +27,9 @@ export class AttributeRowComponent implements OnInit {
       if (this.attributeDefinition.type == AttributeType.DATE) {
         return formatDate(this.currentValue, "yyyy-MM-dd", "en-US", "UTC");
       }
-      else return this.currentValue;
+      else {
+        return this.currentValue;
+      }
     }
     return '';
   }

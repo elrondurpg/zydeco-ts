@@ -1,4 +1,5 @@
 export class Breadcrumb {
-    url     :string = "";
-    title   :string = ""; 
+    constructor(public url:string, public title:string) {
+
+    }
 }
