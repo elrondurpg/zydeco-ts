@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { plainToClass } from 'class-transformer';
+import { Observable, Subscription } from 'rxjs';
 import { AttributeType } from '../../../enum/AttributeType';
 import { NestedAttributeDefinition } from '../../../model/NestedAttributeDefinition';
 import { ObjectModel } from '../../../model/ObjectModel';
@@ -9,12 +10,13 @@ import { ObjectModel } from '../../../model/ObjectModel';
   selector: 'zydeco-nested-attribute',
   templateUrl: './nested-attribute.component.html'
 })
-export class NestedAttributeComponent implements OnInit {
+export class NestedAttributeComponent implements OnInit, OnChanges {
 
   @Input()  attributeDefinition!  :NestedAttributeDefinition<any, any>;
   @Input()  editType!             :string;
   @Input()  models!               :ObjectModel[];
   @Input()  deltas!               :ObjectModel[];
+  @Input()  refresh!              :Observable<any>;
 
   filters :any = {};
 
@@ -22,13 +24,16 @@ export class NestedAttributeComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
+  ngOnChanges() {
     this.models.forEach(model => {
       let delta = this.findMatchingDelta(model);
       if (delta == null) {
         this.deltas.push(this.attributeDefinition.createDeltaClone(model));
       }
     });
+  }
+
+  ngOnInit(): void {
   }
 
   findMatchingDelta(model:ObjectModel) {
@@ -85,6 +90,11 @@ export class NestedAttributeComponent implements OnInit {
       return match;
     }).sort((a, b) => {
       for (let i = 0; i < this.attributeDefinition.keyDefinitions.length; i++) {
+          let aIsNew = this.findMatchingModel(a) == undefined;
+          let bIsNew = this.findMatchingModel(b) == undefined;
+          if (aIsNew && !bIsNew) return -1;
+          else if (bIsNew && !aIsNew) return 1;
+
           let keyDefinition = this.attributeDefinition.keyDefinitions[i];
           let valueA = a.get(keyDefinition.deltaSelector);
           let valueB = b.get(keyDefinition.deltaSelector);

@@ -1,5 +1,5 @@
 <div class="accordion" [id]="getCollapsedTitle() + 'Accordion'">
-    <div class="card-header" id="headingOne">
+    <div class="card-header border-right border-left" id="headingOne">
         <div class="row" *ngFor="let key of sortKeys(); let i = index">
             <ng-container *ngIf="i == 0 || key.filterable">
                 <div class="col-sm-4">
@@ -36,10 +36,10 @@
                 <div class="col">
                     <h5>Key</h5>
                 </div>
-                <div class="col" *ngIf="editType == 'update'">
+                <div class="col" *ngIf="editType == 'update' && attributeDefinition.fieldDefinitions.length > 0">
                     <h5>Current Attributes</h5>
                 </div>
-                <div class="col">
+                <div class="col" *ngIf="attributeDefinition.fieldDefinitions.length > 0">
                     <h5>New Attributes</h5>
                 </div>
             </div>
@@ -50,7 +50,7 @@
             </ng-template>
 
             <ng-container *ngFor="let delta of getFilteredDeltas()">
-                <div class="row p-2 border-bottom">
+                <div class="row p-2 border-bottom border-right border-left">
                     <div class="col">
                         <div class="row" *ngFor="let keyDefinition of attributeDefinition.keyDefinitions">
                             <div class="col">

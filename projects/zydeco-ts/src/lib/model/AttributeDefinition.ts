@@ -21,8 +21,6 @@ export class AttributeDefinition {
     refreshItems() {
         if (this.itemsObservable != undefined) {
             this.itemsObservable.subscribe(items => {
-                console.log("getting refreshed items");
-                console.log(items);
                 this.items.length = 0;
                 this.items.push(...items);
             });
@@ -62,8 +60,6 @@ export class AttributeDefinitionBuilder {
     withItemsFromObservable(observable:Observable<any>) {
         this.attributeDefinition.itemsObservable = observable;
         observable.subscribe(items => {
-            console.log("getting initial items");
-            console.log(items);
             this.attributeDefinition.items.push(...items)
         });
         return this;

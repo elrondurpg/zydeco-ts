@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { AttributeType } from '../../../enum/AttributeType';
 import { ModelDefinition } from '../../../model/ModelDefinition';
 import { NestedAttributeDefinition } from '../../../model/NestedAttributeDefinition';
@@ -10,17 +11,20 @@ import { ObjectModel } from '../../../model/ObjectModel';
 })
 export class AttributesComponent implements OnInit {
 
-  @Input() editType!        :string;
-  @Input() modelDefinition! :ModelDefinition;
-  @Input() model!           :ObjectModel;
-  @Input() delta!           :ObjectModel;
+  @Input()  editType!             :string;
+  @Input()  modelDefinition!      :ModelDefinition;
+  @Input()  model!                :ObjectModel;
+  @Input()  delta!                :ObjectModel;
+  @Input()  refresh!              :Observable<any>;
+
+  emitRefresh                     :Subject<any>       = new Subject<any>();
 
   showInstructions:boolean = true;
 
   constructor() {
   }
 
-  ngOnInit() {
+  ngOnInit() { 
   }
 
   toggleInstructions() {
