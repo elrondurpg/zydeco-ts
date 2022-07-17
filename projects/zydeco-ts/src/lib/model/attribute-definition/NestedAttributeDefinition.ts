@@ -1,11 +1,12 @@
 import { plainToClass } from 'class-transformer';
-import { AttributeType } from '../enum/AttributeType';
-import { AttributeDefinition, AttributeDefinitionBuilder } from './AttributeDefinition';
-import { ObjectModel } from './ObjectModel';
+import { AttributeType } from '../../enum/AttributeType';
+import { AttributeDefinition, AttributeDefinitionBuilder } from '../attribute-definition/AttributeDefinition';
+import { ObjectModel } from '../ObjectModel';
 
 export class NestedAttributeDefinition<ModelClass extends ObjectModel, DeltaClass extends ObjectModel> extends AttributeDefinition {
     keyDefinitions:AttributeDefinition[] = [];
     fieldDefinitions:AttributeDefinition[] = [];
+    allowDuplicates:boolean = false;
 
     constructor(
         public modelClass : new () => ModelClass, 
@@ -14,10 +15,10 @@ export class NestedAttributeDefinition<ModelClass extends ObjectModel, DeltaClas
         this.type = AttributeType.NESTED;
     }
 
-    override refreshItems(): void {
-        super.refreshItems();
-        this.keyDefinitions.forEach(keyDefinition => keyDefinition.refreshItems());
-        this.fieldDefinitions.forEach(fieldDefinition => fieldDefinition.refreshItems());
+    override refresh(): void {
+        super.refresh();
+        this.keyDefinitions.forEach(keyDefinition => keyDefinition.refresh());
+        this.fieldDefinitions.forEach(fieldDefinition => fieldDefinition.refresh());
     }
 
     createDeltaClone(model:ModelClass) :DeltaClass {
@@ -37,8 +38,6 @@ export class NestedAttributeDefinition<ModelClass extends ObjectModel, DeltaClas
 }
 
 export class NestedAttributeDefinitionBuilder<ModelClass extends ObjectModel, DeltaClass extends ObjectModel> extends AttributeDefinitionBuilder {
-    override attributeDefinition!:NestedAttributeDefinition<ModelClass, DeltaClass>;
-
     constructor(protected modelClass : new () => ModelClass, 
     protected deltaClass : new () => DeltaClass) {
         super();
@@ -46,12 +45,17 @@ export class NestedAttributeDefinitionBuilder<ModelClass extends ObjectModel, De
     }
 
     withKeyDefinitions(keyDefinitions:AttributeDefinition[]) {
-        this.attributeDefinition.keyDefinitions = keyDefinitions;
+        (this.attributeDefinition as NestedAttributeDefinition<ModelClass, DeltaClass>).keyDefinitions = keyDefinitions;
         return this;
     }
 
     withFieldDefinitions(fieldDefinitions:AttributeDefinition[]) {
-        this.attributeDefinition.fieldDefinitions = fieldDefinitions;
+        (this.attributeDefinition as NestedAttributeDefinition<ModelClass, DeltaClass>).fieldDefinitions = fieldDefinitions;
+        return this;
+    }
+
+    withAllowDuplicates(allowDuplicates:boolean) {
+        (this.attributeDefinition as NestedAttributeDefinition<ModelClass, DeltaClass>).allowDuplicates = allowDuplicates;
         return this;
     }
 }

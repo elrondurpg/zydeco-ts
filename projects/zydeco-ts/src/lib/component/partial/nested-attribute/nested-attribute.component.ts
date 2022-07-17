@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { plainToClass } from 'class-transformer';
 import { Observable, Subscription } from 'rxjs';
 import { AttributeType } from '../../../enum/AttributeType';
-import { NestedAttributeDefinition } from '../../../model/NestedAttributeDefinition';
+import { NestedAttributeDefinition } from '../../../model/attribute-definition/NestedAttributeDefinition';
 import { ObjectModel } from '../../../model/ObjectModel';
 
 
@@ -25,15 +25,18 @@ export class NestedAttributeComponent implements OnInit, OnChanges {
   constructor() { }
 
   ngOnChanges() {
-    this.models.forEach(model => {
-      let delta = this.findMatchingDelta(model);
-      if (delta == null) {
-        this.deltas.push(this.attributeDefinition.createDeltaClone(model));
-      }
-    });
+    if (this.models != null) {
+      this.models.forEach(model => {
+        let delta = this.findMatchingDelta(model);
+        if (delta == null) {
+          this.deltas.push(this.attributeDefinition.createDeltaClone(model));
+        }
+      });
+    }
   }
 
   ngOnInit(): void {
+
   }
 
   findMatchingDelta(model:ObjectModel) {
@@ -51,17 +54,20 @@ export class NestedAttributeComponent implements OnInit, OnChanges {
   }
 
   findMatchingModel(delta:ObjectModel) {
-    return this.models.find(model => {
-      let match = true;
-      this.attributeDefinition.keyDefinitions.forEach(keyDefinition => {
-        let modelValue = model.get(keyDefinition.modelSelector); 
-        let deltaValue = delta.get(keyDefinition.deltaSelector); 
-        if (modelValue !== deltaValue) {
-          match = false; 
-        }
+    if (this.models != null) {
+      return this.models.find(model => {
+        let match = true;
+        this.attributeDefinition.keyDefinitions.forEach(keyDefinition => {
+          let modelValue = model.get(keyDefinition.modelSelector); 
+          let deltaValue = delta.get(keyDefinition.deltaSelector); 
+          if (modelValue !== deltaValue) {
+            match = false; 
+          }
+        });
+        return match;
       });
-      return match;
-    });
+    }
+    return null;
   }
 
   getCollapsedTitle() {
@@ -118,10 +124,11 @@ export class NestedAttributeComponent implements OnInit, OnChanges {
     }
   }
 
-  addDelta(delta:ObjectModel) {
+  addDeltaFromModal(delta:ObjectModel) {
     delta = plainToClass(this.attributeDefinition.deltaClass, delta);
+    delta.dirty = true;
     this.deltas.push(delta);
-}
+  }
 
   removeDelta(deltaToRemove:ObjectModel) {
     let index = -1;
@@ -140,5 +147,13 @@ export class NestedAttributeComponent implements OnInit, OnChanges {
 
   isEmpty() {
     return this.models.length == 0 && this.deltas.length == 0;
+  }
+
+  getVisibleKeys() {
+    return this.attributeDefinition.keyDefinitions.filter(key => !key.hidden);
+  }
+
+  getVisibleFields() {
+    return this.attributeDefinition.fieldDefinitions.filter(field => !field.hidden);
   }
 }

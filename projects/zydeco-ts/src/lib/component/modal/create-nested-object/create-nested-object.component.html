@@ -9,7 +9,7 @@
             </div>
             <div class="modal-body">
                 <ng-container>
-                    <div class="row" *ngFor="let keyDefinition of attributeDefinition.keyDefinitions">
+                    <div class="row" *ngFor="let keyDefinition of getVisibleKeys()">
                         <div class="col">
                             <label class="col-form-label">
                                 <h6>{{ keyDefinition.title }}</h6>
@@ -23,7 +23,7 @@
                                 [ngModel]="delta.get(keyDefinition.deltaSelector)"
                                 (ngModelChange)="delta.set(keyDefinition.deltaSelector, $event)">
                                 <option selected value="undefined">- none -</option>
-                                <option *ngFor="let item of keyDefinition.items" [value]="item">{{ item }}</option>
+                                <option *ngFor="let item of getSortedItems(keyDefinition)" [value]="item">{{ item }}</option>
                             </select>
                             <input
                                 *ngIf="keyDefinition.type == AttributeType.STRING"
@@ -34,20 +34,20 @@
                             <div 
                                 class="text-danger pt-2" 
                                 *ngIf="keyDefinition.type == AttributeType.STRING && delta.get(keyDefinition.deltaSelector)
-                                        && (delta.get(keyDefinition.deltaSelector).length > keyDefinition.maxlength
-                                        || delta.get(keyDefinition.deltaSelector).length < keyDefinition.minlength)">
-                                {{ keyDefinition.title }} must be between {{ keyDefinition.minlength }} and {{ keyDefinition.maxlength }} characters long.
+                                        && (delta.get(getStringKeyDefinition(keyDefinition).deltaSelector).length > getStringKeyDefinition(keyDefinition).maxlength
+                                        || delta.get(getStringKeyDefinition(keyDefinition).deltaSelector).length < getStringKeyDefinition(keyDefinition).minlength)">
+                                {{ keyDefinition.title }} must be between {{ getStringKeyDefinition(keyDefinition).minlength }} and {{ getStringKeyDefinition(keyDefinition).maxlength }} characters long.
                             </div>
                                     
                         </div>
                     </div>
                 </ng-container>
-                <div class="text-danger pt-2" *ngIf="findMatchingDelta(delta) !== undefined">
+                <div class="text-danger pt-2" *ngIf="findMatchingDelta(delta) !== undefined && !attributeDefinition.allowDuplicates">
                     The list already contains this item.
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" (click)="onCreate()" [disabled]="findMatchingDelta(delta) !== undefined || !areAllKeysChosen() || !areAllKeysValid()" data-dismiss="modal">Add</button>
+                <button type="button" class="btn btn-primary" (click)="onCreate()" [disabled]="(findMatchingDelta(delta) !== undefined && !attributeDefinition.allowDuplicates) || !areAllKeysChosen() || !areAllKeysValid()" data-dismiss="modal">Add</button>
                 <button type="button" class="btn btn-secondary" (click)="clear()" data-dismiss="modal">Cancel</button>
             </div>
         </div>

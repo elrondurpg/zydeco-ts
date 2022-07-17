@@ -2,16 +2,16 @@
     type="text" 
     class="form-control" 
     [(ngModel)]="updatedValue" 
-    [minlength]="attributeDefinition.minlength" 
-    [maxlength]="attributeDefinition.maxlength" 
+    [minlength]="getStringAttributeDefinition().minlength" 
+    [maxlength]="getStringAttributeDefinition().maxlength" 
     [required]="attributeDefinition.required && editType == 'create'"
     #validator="ngModel"
     [ngClass]="validator.invalid && (validator.dirty || validator.touched) ? 'is-invalid' : ''">
 <div class="invalid-feedback" *ngIf="validator.errors && validator.errors['minlength']">
-    {{ attributeDefinition.title }} must be at least {{ attributeDefinition.minlength }} characters long.
+    {{ attributeDefinition.title }} must be at least {{ getStringAttributeDefinition().minlength }} characters long.
 </div>   
 <div class="invalid-feedback" *ngIf="validator.errors && validator.errors['maxlength']">
-    {{ attributeDefinition.title }} must be no more than {{ attributeDefinition.maxlength }} characters long.
+    {{ attributeDefinition.title }} must be no more than {{ getStringAttributeDefinition().maxlength }} characters long.
 </div>   
 <div class="invalid-feedback" *ngIf="validator.errors && validator.errors['required']">
     Please provide a value for {{ attributeDefinition.title }}.

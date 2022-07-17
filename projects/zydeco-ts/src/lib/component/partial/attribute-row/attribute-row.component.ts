@@ -1,7 +1,7 @@
 import { formatDate } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AttributeType } from '../../../enum/AttributeType';
-import { AttributeDefinition } from '../../../model/AttributeDefinition';
+import { AttributeDefinition } from '../../../model/attribute-definition/AttributeDefinition';
 import { ObjectModel } from '../../../model/ObjectModel';
 
 @Component({
@@ -14,6 +14,8 @@ export class AttributeRowComponent implements OnInit {
   @Input() currentValue!        :string;
   @Input() editType!            :string;
   @Input() delta!               :ObjectModel;
+
+  @Output() valueChanged = new EventEmitter();
 
   readonly AttributeType = AttributeType;
 
@@ -32,6 +34,10 @@ export class AttributeRowComponent implements OnInit {
       }
     }
     return '';
+  }
+
+  onChange(event:any) {
+    this.valueChanged.emit(event);
   }
 
 }

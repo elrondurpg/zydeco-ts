@@ -1,5 +1,6 @@
 import { Component, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NumberAttributeDefinition } from '../../../model/attribute-definition/NumberAttributeDefinition';
 import { AttributeComponent } from '../attribute/attribute.component';
 
 @Component({
@@ -22,6 +23,10 @@ export class NumberAttributeComponent extends AttributeComponent {
     }
     this._updatedValue = value;
     this.onChange(value);
+  }
+
+  getNumberAttributeDefinition() {
+    return this.attributeDefinition as NumberAttributeDefinition;
   }
 
 }

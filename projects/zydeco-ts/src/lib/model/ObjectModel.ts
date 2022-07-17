@@ -2,6 +2,7 @@ export abstract class ObjectModel {
     
     ignoreProperties:string[] = [];
     delete:boolean | undefined = undefined;
+    dirty:boolean | undefined = undefined;
 
     abstract getDisplayName()   :string;
     abstract getId()            :any;

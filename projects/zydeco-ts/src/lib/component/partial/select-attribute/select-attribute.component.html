@@ -5,7 +5,7 @@
     #validator="ngModel"
     [ngClass]="validator.invalid && (validator.dirty || validator.touched) ? 'is-invalid' : ''">
     <option selected value="undefined">- unchanged -</option>
-    <option *ngFor="let item of attributeDefinition.items" [value]="item">{{ item }}</option>
+    <option *ngFor="let item of getSortedItems()" [value]="item">{{ item }}</option>
 </select>
 <div class="invalid-feedback" *ngIf="validator.errors && validator.errors['required']">
     Please provide a value for {{ attributeDefinition.title }}.

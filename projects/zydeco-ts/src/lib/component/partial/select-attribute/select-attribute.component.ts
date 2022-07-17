@@ -1,6 +1,7 @@
 import { Component, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AttributeComponent } from '../attribute/attribute.component';
+import { SelectAttributeDefinition } from '../../../model/attribute-definition/SelectAttributeDefinition';
 
 @Component({
   selector: 'zydeco-select-attribute',
@@ -24,4 +25,12 @@ export class SelectAttributeComponent extends AttributeComponent {
     this.onChange(value);
   }
 
+  getSortedItems() {
+    let attr = this.attributeDefinition as SelectAttributeDefinition;
+    return attr.items.filter(item => attr.disallowedItems.indexOf(item) == -1).sort();
+  }
+
+  getSelectAttributeDefinition() {
+    return this.attributeDefinition as SelectAttributeDefinition;
+  }
 }

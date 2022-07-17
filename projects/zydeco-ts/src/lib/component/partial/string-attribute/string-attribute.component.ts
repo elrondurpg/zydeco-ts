@@ -1,5 +1,6 @@
 import { Component, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { StringAttributeDefinition } from '../../../model/attribute-definition/StringAttributeDefinition';
 import { AttributeComponent } from '../attribute/attribute.component';
 
 @Component({
@@ -24,4 +25,7 @@ export class StringAttributeComponent extends AttributeComponent {
     this.onChange(value);
   }
 
+  getStringAttributeDefinition() {
+    return this.attributeDefinition as StringAttributeDefinition;
+  }
 }

@@ -3,16 +3,16 @@
     step="attributeDefinition.step"
     class="form-control" 
     [(ngModel)]="updatedValue"
-    [min]="attributeDefinition.minvalue"
-    [max]="attributeDefinition.maxvalue"
+    [min]="getNumberAttributeDefinition().minvalue"
+    [max]="getNumberAttributeDefinition().maxvalue"
     [required]="attributeDefinition.required && editType == 'create'"
     #validator="ngModel"
     [ngClass]="validator.invalid && (validator.dirty || validator.touched) ? 'is-invalid' : ''">               
 <div class="invalid-feedback" *ngIf="validator.errors && validator.errors['min']">
-    {{ attributeDefinition.title }} must be at least {{ attributeDefinition.minvalue }}.
+    {{ attributeDefinition.title }} must be at least {{ getNumberAttributeDefinition().minvalue }}.
 </div>   
 <div class="invalid-feedback" *ngIf="validator.errors && validator.errors['max']">
-    {{ attributeDefinition.title }} must be no more than {{ attributeDefinition.maxvalue }}.
+    {{ attributeDefinition.title }} must be no more than {{ getNumberAttributeDefinition().maxvalue }}.
 </div>   
 <div class="invalid-feedback" *ngIf="validator.errors && validator.errors['required']">
     Please provide a value for {{ attributeDefinition.title }}.

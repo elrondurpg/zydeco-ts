@@ -1,6 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AttributeType } from '../../../enum/AttributeType';
-import { NestedAttributeDefinition } from '../../../model/NestedAttributeDefinition';
+import { AttributeDefinition } from '../../../model/attribute-definition/AttributeDefinition';
+import { NestedAttributeDefinition } from '../../../model/attribute-definition/NestedAttributeDefinition';
+import { SelectAttributeDefinition } from '../../../model/attribute-definition/SelectAttributeDefinition';
+import { StringAttributeDefinition } from '../../../model/attribute-definition/StringAttributeDefinition';
 import { ObjectModel } from '../../../model/ObjectModel';
 
 @Component({
@@ -27,13 +30,13 @@ export class CreateNestedObjectComponent implements OnInit {
   }
 
   areAllKeysChosen() {
-    return this.attributeDefinition.keyDefinitions.find(keyDefinition => this.delta.get(keyDefinition.deltaSelector) == undefined) == undefined;
+    return this.attributeDefinition.keyDefinitions.find(keyDefinition => !keyDefinition.hidden && this.delta.get(keyDefinition.deltaSelector) == undefined) == undefined;
   }
 
   areAllKeysValid() {
-    return this.attributeDefinition.keyDefinitions.find(keyDefinition => {
+    return this.attributeDefinition.keyDefinitions.filter(keyDefinition => keyDefinition instanceof StringAttributeDefinition).find(keyDefinition => {
       let value = this.delta.get(keyDefinition.deltaSelector);
-      return typeof value == "string" && (value.length < keyDefinition.minlength || value.length > keyDefinition.maxlength);
+      return typeof value == "string" && (value.length < (keyDefinition as StringAttributeDefinition).minlength || value.length > (keyDefinition as StringAttributeDefinition).maxlength);
     }) == undefined;
   }
 
@@ -60,4 +63,16 @@ export class CreateNestedObjectComponent implements OnInit {
     this.delta = this.attributeDefinition.createDelta();
   }
 
+  getSortedItems(keyDefinition:AttributeDefinition) {
+    let key = keyDefinition as SelectAttributeDefinition;
+    return key.items.filter(item => key.disallowedItems.indexOf(item) == -1).sort();
+  }
+
+  getStringKeyDefinition(keyDefinition:AttributeDefinition) {
+    return keyDefinition as StringAttributeDefinition;
+  }
+
+  getVisibleKeys() {
+    return this.attributeDefinition.keyDefinitions.filter(key => !key.hidden);
+  }
 }

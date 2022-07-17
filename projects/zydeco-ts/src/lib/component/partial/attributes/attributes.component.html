@@ -3,9 +3,10 @@
     <ng-container *ngFor="let attribute of getFlatAttributes()">
         <zydeco-attribute-row
             [attributeDefinition]="attribute"
-            [currentValue]="model.get(attribute.modelSelector)"
+            [currentValue]="model != null ? model.get(attribute.modelSelector) : null"
             [editType]="editType"
             [delta]="delta"
+            (valueChanged)="onChange($event)"
         ></zydeco-attribute-row>
 
         <div class="container-fluid border border-info"
