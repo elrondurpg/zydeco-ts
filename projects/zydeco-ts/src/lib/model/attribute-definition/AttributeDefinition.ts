@@ -10,6 +10,7 @@ export abstract class AttributeDefinition {
     instructions:string = "";
     filterable:boolean = false;
     hidden:boolean = false;
+    urlBase:string = "";
 
     refresh() {
 
@@ -62,6 +63,11 @@ export abstract class AttributeDefinitionBuilder {
 
     withHidden(hidden:boolean) {
         this.attributeDefinition.hidden = hidden;
+        return this;
+    }
+    
+    withUrlBase(urlBase:string) {
+        this.attributeDefinition.urlBase = urlBase;
         return this;
     }
 

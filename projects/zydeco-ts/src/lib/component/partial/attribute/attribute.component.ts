@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ControlValueAccessor } from "@angular/forms";
 import { AttributeDefinition } from '../../../model/attribute-definition/AttributeDefinition';
 
@@ -10,8 +10,6 @@ export abstract class AttributeComponent implements ControlValueAccessor, OnInit
 
   @Input() attributeDefinition! :AttributeDefinition;
   @Input() editType!            :string;
-
-  @Output() change = new EventEmitter();
 
   protected _updatedValue :any = undefined;
 
@@ -43,7 +41,7 @@ export abstract class AttributeComponent implements ControlValueAccessor, OnInit
     throw new Error('Method not implemented.');
   }
 
-  onChange = (_ : any) => { this.change.emit(this.attributeDefinition.title) };
+  onChange = (_ : any) => { };
   onTouched = () => {};
   registerOnChange(fn: (_: any) => void): void { this.onChange = fn; }
   registerOnTouched(fn: () => void): void { this.onTouched = fn; }

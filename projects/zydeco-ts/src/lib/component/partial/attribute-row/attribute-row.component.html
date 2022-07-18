@@ -5,7 +5,14 @@
         </div>
     
         <div class="col-sm-5" *ngIf="editType == 'update'">
-            {{ getFormattedCurrentValue() }}
+            <a 
+                *ngIf="attributeDefinition.urlBase != ''; else flatValue"
+                [href]="attributeDefinition.urlBase + getFormattedCurrentValue()">
+                {{ getFormattedCurrentValue() }}
+            </a>
+            <ng-template #flatValue>
+                {{ getFormattedCurrentValue() }}
+            </ng-template>
         </div>
     
         <div class="col-sm-5" *ngIf="editType == 'create' || !attributeDefinition.immutable">

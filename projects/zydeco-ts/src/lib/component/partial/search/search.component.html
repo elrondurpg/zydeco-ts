@@ -1,6 +1,6 @@
 <div class="container pb-3 border-left border-right">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6" *ngIf="items != null && items.length > 0">
             <select *ngIf="filterable == true" class="form-control" [(ngModel)]="filter">
                 <option selected value="undefined" hidden>Select an item to view or edit</option>
                 <ng-container *ngIf="!complex">
@@ -11,13 +11,13 @@
                 </ng-container>
             </select>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2" *ngIf="items != null && items.length > 0">
             <button *ngIf="filterable == true" type="submit" class="btn btn-primary btn-block" (click)="emitLoad()">Load</button>
         </div>
-        <div class="col-md-2">
+        <div [ngClass]="items == null || items.length == 0 ? 'col-md-6' : 'col-md-2'">
             <button type="button" class="btn btn-primary btn-block" (click)="filter = ''; emitCreate()">+ New</button>
         </div>
-        <div class="col-md-2">
+        <div [ngClass]="items == null || items.length == 0 ? 'col-md-6' : 'col-md-2'">
             <button type="button" class="btn btn-block" [ngClass]="changes == false ? 'btn-primary' : 'btn-warning'" [disabled]="changes == false" (click)="emitSave()">Save</button>
         </div>
     </div>
