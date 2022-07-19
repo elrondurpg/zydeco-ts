@@ -26,7 +26,7 @@ export class CreateNestedObjectComponent implements OnInit {
   }
 
   getTitle() {
-    return this.attributeDefinition.title.replace(/(\s)/g, '');
+    return "CreateNestedObjectsFor" + this.attributeDefinition.title.replace(/(\s)/g, '');
   }
 
   areAllKeysChosen() {
