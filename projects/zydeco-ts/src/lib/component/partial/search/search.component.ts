@@ -1,23 +1,32 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { GeneralConstants } from '../../../constants/GeneralConstants';
 import { ObjectModel } from '../../../model/ObjectModel';
 
 @Component({
   selector: 'zydeco-search',
   templateUrl: './search.component.html'
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnChanges, OnInit {
   @Output() create  = new EventEmitter();
   @Output() load    = new EventEmitter();
   @Output() save    = new EventEmitter();
 
-  @Input() items      :any[]    = [];
-  @Input() changes    :boolean  = false;
-  @Input() filterable :boolean  = true;
-  @Input() complex    :boolean  = false;
-  
-  filter:string = "";
+  @Input() items      :any[]              = [];
+  @Input() changes    :boolean            = false;
+  @Input() filterable :boolean            = true;
+  @Input() complex    :boolean            = false;
+           filter     :string | undefined = undefined;
+
+  searchBarMessage      = GeneralConstants.SEARCH_BAR_MESSAGE;
+  searchBarEmptyMessage = GeneralConstants.SEARCH_BAR_EMPTY_MESSAGE;
 
   constructor() { }
+
+  ngOnChanges(changes:SimpleChanges) {
+    if (changes['items'] != null) {
+      this.filter = undefined;
+    }
+  }
 
   ngOnInit() {
   }
