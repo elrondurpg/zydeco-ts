@@ -1,5 +1,6 @@
-import { ObjectModel } from "zydeco-ts";
+import { ObjectModel } from "./ObjectModel";
 
-export abstract class AnyObjectModel extends ObjectModel {
-
+export class AnyObjectModel extends ObjectModel {
+    getDisplayName() { return "displayName"; }
+    getId() { return "id"; }
 }

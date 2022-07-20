@@ -9,6 +9,15 @@ export class StringAttributeDefinition extends AttributeDefinition {
         super();
         this.type = AttributeType.STRING;
     }
+
+    override getValidationErrors(value: any): string[] {
+        let errors = super.getValidationErrors(value);
+        if (!this.isEmpty(value)
+            && (value.trim().length > this.maxlength || value.trim().length < this.minlength)) {
+                errors.push(`${this.title} must be between ${this.minlength} and ${this.maxlength} characters long.`);
+        }
+        return errors;
+    }
 }
 
 export class StringAttributeDefinitionBuilder extends AttributeDefinitionBuilder {

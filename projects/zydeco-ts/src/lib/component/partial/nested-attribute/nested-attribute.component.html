@@ -1,3 +1,4 @@
+<zydeco-message #messageBox></zydeco-message>
 <div class="accordion" [id]="getCollapsedTitle() + 'Accordion'">
     <div class="card-header border-right border-left" id="headingOne">
         <div class="row" *ngFor="let key of sortKeys(); let i = index" [ngClass]="i > 0 ? 'pt-2' : ''">
@@ -16,12 +17,24 @@
                         [placeholder]="'Filter ' + key.title" />
                 </div>
                 <div class="col-sm-2">
-                    <!--button *ngIf="attribute.importable && i == 0" type="button" class="btn btn-primary btn-block"  data-toggle="modal" [attr.data-target]="'#bulkImport' + getTitle() + 'Modal'">
+                    <button 
+                        *ngIf="attributeDefinition.importable && attributeDefinition.keyDefinitions.length == 1 && i == 0" 
+                        type="button" 
+                        class="btn btn-primary btn-block"  
+                        data-toggle="modal" 
+                        [attr.data-target]="'#newImportNestedObjectsFor' + getCollapsedTitle() + 'Modal'"
+                        (click)="importNestedObjectsModal.onShow()">
                         Bulk Import
-                    </button-->
+                    </button>
                 </div>
                 <div class="col-sm-2">
-                    <button *ngIf="i == 0" type="button" class="btn btn-primary btn-block"  data-toggle="modal" [attr.data-target]="'#new' + getCollapsedTitle() + 'Modal'">
+                    <button 
+                        *ngIf="i == 0" 
+                        type="button" 
+                        class="btn btn-primary btn-block" 
+                        data-toggle="modal"
+                        [attr.data-target]="'#newCreateNestedObjectsFor' + getCollapsedTitle() + 'Modal'"
+                        (click)="createNestedObjectModal.onShow()">
                         + New
                     </button>
                 </div>
@@ -147,7 +160,12 @@
     </div>
 </div>
 
-<zydeco-create-nested-object
+<zydeco-create-nested-object #createNestedObjectModal
     [attributeDefinition]="attributeDefinition"
     [deltas]="deltas"
     (create)="addDeltaFromModal($event)"></zydeco-create-nested-object>
+
+<zydeco-import-nested-objects #importNestedObjectsModal
+    *ngIf="attributeDefinition.importable && attributeDefinition.keyDefinitions.length == 1"
+    [attributeDefinition]="attributeDefinition"
+    (create)="importValues($event)"></zydeco-import-nested-objects>

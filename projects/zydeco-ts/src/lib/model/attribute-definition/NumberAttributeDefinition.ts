@@ -10,6 +10,19 @@ export class NumberAttributeDefinition extends AttributeDefinition {
         super();
         this.type = AttributeType.NUMBER;
     }
+
+    override getValidationErrors(value: any): string[] {
+        let errors = super.getValidationErrors(value);
+        if (!this.isEmpty(value)) {
+            if (value < this.minvalue) {
+                errors.push(`${this.title} must be at least ${this.minvalue }.`);
+            }        
+            if (value > this.maxvalue) {
+                errors.push(`${this.title} must be less than ${this.maxvalue }.`);
+            }        
+        }
+        return errors;
+    }
 }
 
 export class NumberAttributeDefinitionBuilder extends AttributeDefinitionBuilder {

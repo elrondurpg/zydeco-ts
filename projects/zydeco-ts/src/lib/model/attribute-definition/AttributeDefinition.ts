@@ -1,19 +1,36 @@
 import { AttributeType } from "../../enum/AttributeType";
 
 export abstract class AttributeDefinition {
-    title:string = "";
-    type:AttributeType = AttributeType.STRING;
-    modelSelector:string = "";
-    deltaSelector:string = "";
-    required:boolean = false;
-    immutable:boolean = false;
-    instructions:string = "";
-    filterable:boolean = false;
-    hidden:boolean = false;
-    urlBase:string = "";
+    title:string            = "";
+    type:AttributeType      = AttributeType.STRING;
+    modelSelector:string    = "";
+    deltaSelector:string    = "";
+    required:boolean        = false;
+    immutable:boolean       = false;
+    instructions:string     = "";
+    filterable:boolean      = false;
+    hidden:boolean          = false;
+    importable:boolean      = false;
+    urlBase:string          = "";
 
     refresh() {
 
+    }
+
+    isValidKey(key:any) {
+        return true;
+    }
+
+    isEmpty(value:any) {
+        return value == undefined || value == null || (value instanceof String && value.trim() == "");
+    }
+
+    getValidationErrors(value:any) {
+        let errors:string[] = [];
+        if (this.required && this.isEmpty(value)) {
+            errors.push("Please provide a value for " + this.title);
+        }
+        return errors;
     }
 }
 
@@ -68,6 +85,11 @@ export abstract class AttributeDefinitionBuilder {
     
     withUrlBase(urlBase:string) {
         this.attributeDefinition.urlBase = urlBase;
+        return this;
+    }
+
+    withImportable(importable:boolean) {
+        this.attributeDefinition.importable = importable;
         return this;
     }
 

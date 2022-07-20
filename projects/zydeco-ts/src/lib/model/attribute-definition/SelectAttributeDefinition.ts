@@ -12,6 +12,10 @@ export class SelectAttributeDefinition extends AttributeDefinition {
         this.type = AttributeType.SELECT;
     }
 
+    override isValidKey(key:any) {
+        return this.items.indexOf(key) != -1 && this.disallowedItems.indexOf(key) == -1;
+    }
+
     override refresh() {
         this.refreshItems();
     }

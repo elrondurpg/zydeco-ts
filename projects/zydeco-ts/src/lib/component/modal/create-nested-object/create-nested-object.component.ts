@@ -19,22 +19,23 @@ export class CreateNestedObjectComponent implements OnInit {
 
   delta! :ObjectModel;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
     this.delta = this.attributeDefinition.createDelta();
   }
 
   getTitle() {
-    return "CreateNestedObjectsFor" + this.attributeDefinition.title.replace(/(\s)/g, '');
+    return "newCreateNestedObjectsFor" + this.attributeDefinition.title.replace(/(\s)/g, '') + "Modal";
   }
 
   areAllKeysChosen() {
-    return this.attributeDefinition.keyDefinitions.find(keyDefinition => !keyDefinition.hidden && this.delta.get(keyDefinition.deltaSelector) == undefined) == undefined;
+    return this.delta != null && this.attributeDefinition.keyDefinitions.find(keyDefinition => !keyDefinition.hidden && this.delta.get(keyDefinition.deltaSelector) == undefined) == undefined;
   }
 
   areAllKeysValid() {
-    return this.attributeDefinition.keyDefinitions.filter(keyDefinition => keyDefinition instanceof StringAttributeDefinition).find(keyDefinition => {
+    return this.delta != null && this.attributeDefinition.keyDefinitions.filter(keyDefinition => keyDefinition instanceof StringAttributeDefinition).find(keyDefinition => {
       let value = this.delta.get(keyDefinition.deltaSelector);
       return typeof value == "string" && (value.length < (keyDefinition as StringAttributeDefinition).minlength || value.length > (keyDefinition as StringAttributeDefinition).maxlength);
     }) == undefined;
@@ -56,10 +57,9 @@ export class CreateNestedObjectComponent implements OnInit {
 
   onCreate() {
     this.create.emit(this.delta);
-    this.clear();
   } 
 
-  clear() {
+  onShow() {
     this.delta = this.attributeDefinition.createDelta();
   }
 
