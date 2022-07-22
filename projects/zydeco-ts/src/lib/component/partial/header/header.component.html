@@ -1,5 +1,5 @@
 <div class="container pb-40">
-    <nav aria-label="breadcrumb" class="pt-3">
+    <nav aria-label="breadcrumb" class="pt-3 border-left border-right">
         <ol class="breadcrumb">
             <li *ngFor="let breadcrumb of breadcrumbs" class="breadcrumb-item">
                 <a [attr.href]="breadcrumb.url">{{ breadcrumb.title }}</a>
@@ -8,6 +8,7 @@
         </ol>
     </nav>
     <zydeco-search 
+        [form]="form"
         [items]="items" 
         [complex]="complex" 
         [changes]="changes" 

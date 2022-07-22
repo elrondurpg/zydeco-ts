@@ -1,4 +1,5 @@
 <select 
+    [name]="attributeDefinition.title"
     class="form-control" 
     [(ngModel)]="updatedValue" 
     [required]="attributeDefinition.required && editType == 'create'"

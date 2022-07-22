@@ -12,6 +12,7 @@ export abstract class AttributeDefinition {
     hidden:boolean          = false;
     importable:boolean      = false;
     urlBase:string          = "";
+    valid:boolean | null    = null;
 
     refresh() {
 
@@ -31,6 +32,10 @@ export abstract class AttributeDefinition {
             errors.push("Please provide a value for " + this.title);
         }
         return errors;
+    }
+
+    isValid() {
+        return this.valid;
     }
 }
 

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Breadcrumb } from '../../../model/Breadcrumb';
 import { MessageComponent } from '../message/message.component';
 
@@ -12,6 +13,7 @@ export class HeaderComponent implements OnInit {
   @Input() changes!     :boolean;
   @Input() items!       :any[];
   @Input() title!       :string;
+  @Input() form!        :NgForm;
 
   @Output() create  = new EventEmitter();
   @Output() save    = new EventEmitter();

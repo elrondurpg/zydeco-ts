@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ControlValueAccessor } from "@angular/forms";
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { ControlValueAccessor, NgModel } from "@angular/forms";
 import { AttributeDefinition } from '../../../model/attribute-definition/AttributeDefinition';
 
 @Component({
@@ -41,7 +41,8 @@ export abstract class AttributeComponent implements ControlValueAccessor, OnInit
     throw new Error('Method not implemented.');
   }
 
-  onChange = (_ : any) => { };
+  onChange = (_ : any) => { 
+  };
   onTouched = () => {};
   registerOnChange(fn: (_: any) => void): void { this.onChange = fn; }
   registerOnTouched(fn: () => void): void { this.onTouched = fn; }

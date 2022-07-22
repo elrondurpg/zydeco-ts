@@ -1,4 +1,4 @@
-import { Injector, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { HeaderComponent } from './component/partial/header/header.component';
 import { MessageComponent } from './component/partial/message/message.component';
 import { SearchComponent } from './component/partial/search/search.component';
@@ -44,8 +44,4 @@ import { ImportNestedObjectsComponent } from './component/modal/import-nested-ob
   ]
 })
 export class ZydecoTs { 
-  static injector: Injector;
-  constructor(injector: Injector) {
-    ZydecoTs.injector = injector;
-  }
 }

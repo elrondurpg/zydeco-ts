@@ -16,15 +16,15 @@ import { AttributeComponent } from '../attribute/attribute.component';
 export class BooleanAttributeComponent extends AttributeComponent {
 
   override writeValue(value: any) {
-    if ((value != null && value.trim() == "") || value == "undefined")
+    if ((value != null && (typeof value != "string" || value.trim() == "")) || value == "undefined")
     {
       value = undefined;
     }
-    else if ((value != null && value.trim() == "true"))
+    else if ((value != null && typeof value == "string" && value.trim() == "true"))
     {
       value = true;
     }
-    else if ((value != null && value.trim() == "false"))
+    else if ((value != null && typeof value == "string" && value.trim() == "false"))
     {
       value = false;
     }

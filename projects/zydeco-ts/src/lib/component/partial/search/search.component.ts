@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { GeneralConstants } from '../../../constants/GeneralConstants';
 import { ObjectModel } from '../../../model/ObjectModel';
 
@@ -15,6 +16,7 @@ export class SearchComponent implements OnChanges, OnInit {
   @Input() changes    :boolean            = false;
   @Input() filterable :boolean            = true;
   @Input() complex    :boolean            = false;
+  @Input() form!      :NgForm;
            filter     :string | undefined = undefined;
 
   searchBarMessage      = GeneralConstants.SEARCH_BAR_MESSAGE;
@@ -68,6 +70,7 @@ export class SearchComponent implements OnChanges, OnInit {
   }
 
   emitCreate() {
+    this.filter = undefined;
     this.create.emit(null);
   }
 
@@ -76,6 +79,8 @@ export class SearchComponent implements OnChanges, OnInit {
   }
 
   emitSave() {
+    console.log("saving");
+    console.log(this.form);
     this.save.emit(null);
   }
 

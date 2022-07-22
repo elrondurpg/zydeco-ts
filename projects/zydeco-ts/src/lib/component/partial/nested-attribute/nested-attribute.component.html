@@ -4,8 +4,8 @@
         <div class="row" *ngFor="let key of sortKeys(); let i = index" [ngClass]="i > 0 ? 'pt-2' : ''">
             <ng-container *ngIf="i == 0 || key.filterable">
                 <div class="col-sm-4">
-                    <button *ngIf="i == 0" class="btn btn-link" type="button" data-toggle="collapse" [attr.data-target]="'#' + getCollapsedTitle() + 'Collapse'" aria-expanded="true" [attr.aria-controls]="getCollapsedTitle() + 'Collapse'">
-                        {{ attributeDefinition.title }}
+                    <button *ngIf="i == 0" class="btn btn-link px-0" type="button" data-toggle="collapse" [attr.data-target]="'#' + getCollapsedTitle() + 'Collapse'" aria-expanded="true" [attr.aria-controls]="getCollapsedTitle() + 'Collapse'">
+                        <h6>{{ attributeDefinition.title }}</h6>
                     </button>
                 </div>
                 <div class="col-sm-4">
@@ -61,99 +61,99 @@
                     <p>There doesn't seem to be anything here! Check your search filters or click the New+ button to begin.</p>
                 </div>
             </ng-template>
-
-            <ng-container *ngFor="let delta of getFilteredDeltas()">
-                <div class="row p-2 border-bottom border-right border-left">
-                    <div class="col">
-                        <div class="row" *ngFor="let keyDefinition of getVisibleKeys()">
-                            <div class="col">
-                                <label class="col-form-label" [ngClass]="delta.delete == true ? 'strikethrough' : ''">
-                                    <h6>{{ keyDefinition.title }}</h6>
-                                </label>
+            <ng-container *ngFor="let numVisibleFields of [getVisibleFields().length]">
+                <div [ngClass]="numVisibleFields > 0 ? '' : 'row px-2 border-bottom border-right border-left'">
+                    <ng-container *ngFor="let delta of getFilteredDeltas()">
+                        <div [ngClass]="numVisibleFields > 0 ? 'row p-2 border-bottom border-right border-left' : 'col-12 col-md-4 py-2 border-bottom'">
+                            <div [ngClass]="numVisibleFields > 0 ? 'col' : ''">
+                                <div class="row" *ngFor="let keyDefinition of getVisibleKeys()">
+                                    <div class="col">
+                                        <label [ngClass]="delta.delete == true ? 'strikethrough' : ''">
+                                            <h6>{{ keyDefinition.title }}</h6>
+                                        </label>
+                                    </div>
+                                    <div class="col">
+                                        <label 
+                                            [ngClass]="delta.delete == true ? 'strikethrough' : ''">
+                                            {{ delta.get(keyDefinition.deltaSelector) }}
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <button type="submit" class="btn btn-primary btn-block" (click)="toggleDelete(delta)">
+                                            {{ delta.delete ? 'Restore' : 'Delete' }}
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col">
-                                <label 
-                                    class="form-check-label"
-                                    [ngClass]="delta.delete == true ? 'strikethrough' : ''">
-                                    {{ delta.get(keyDefinition.deltaSelector) }}
-                                </label>
+                            <div class="col" *ngIf="numVisibleFields > 0">
+                                <div class="row" *ngFor="let fieldDefinition of getVisibleFields()">
+                                    <div class="col">
+                                        <label 
+                                            [ngClass]="delta.delete == true ? 'strikethrough' : ''"
+                                            *ngIf="findMatchingModel(delta)">
+                                            <h6>{{ fieldDefinition.title }}</h6>
+                                        </label>
+                                    </div>
+                                    <div class="col">
+                                        <label 
+                                            *ngIf="findMatchingModel(delta); let model"
+                                            [ngClass]="delta.delete == true ? 'strikethrough' : ''">
+                                            {{ fieldDefinition.type == AttributeType.DATE ? (model.get(fieldDefinition.deltaSelector) | date:'yyyy-MM-dd':'UTC':'en-US') : model.get(fieldDefinition.deltaSelector) }}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col" *ngIf="numVisibleFields > 0">
+                                <div class="row" *ngFor="let fieldDefinition of getVisibleFields()">
+                                    <div class="col">
+                                        <label class="col-form-label" [ngClass]="delta.delete == true ? 'strikethrough' : ''">
+                                            <h6>{{ fieldDefinition.title }}</h6>
+                                        </label>
+                                    </div>
+                                    <div class="col">
+                                        <ng-container [ngSwitch]="fieldDefinition.type">
+                                            <zydeco-string-attribute *ngSwitchCase="AttributeType.STRING"
+                                                [attributeDefinition]="fieldDefinition"
+                                                [editType]="findMatchingModel(delta) != undefined ? 'update' : 'create'"
+                                                [ngModel]="delta.get(fieldDefinition.deltaSelector)"
+                                                (ngModelChange)="delta.set(fieldDefinition.deltaSelector, $event)">
+                                            </zydeco-string-attribute>
+                                    
+                                            <zydeco-date-attribute *ngSwitchCase="AttributeType.DATE"
+                                                [attributeDefinition]="fieldDefinition"
+                                                [editType]="findMatchingModel(delta) != undefined ? 'update' : 'create'"
+                                                [ngModel]="delta.get(fieldDefinition.deltaSelector)"
+                                                (ngModelChange)="delta.set(fieldDefinition.deltaSelector, $event)">
+                                            </zydeco-date-attribute>
+                                    
+                                            <zydeco-select-attribute *ngSwitchCase="AttributeType.SELECT"
+                                                [attributeDefinition]="fieldDefinition"
+                                                [editType]="findMatchingModel(delta) != undefined ? 'update' : 'create'"
+                                                [ngModel]="delta.get(fieldDefinition.deltaSelector)"
+                                                (ngModelChange)="delta.set(fieldDefinition.deltaSelector, $event)">
+                                            </zydeco-select-attribute>
+                                    
+                                            <zydeco-boolean-attribute *ngSwitchCase="AttributeType.BOOLEAN"
+                                                [attributeDefinition]="fieldDefinition"
+                                                [editType]="findMatchingModel(delta) != undefined ? 'update' : 'create'"
+                                                [ngModel]="delta.get(fieldDefinition.deltaSelector)"
+                                                (ngModelChange)="delta.set(fieldDefinition.deltaSelector, $event)">
+                                            </zydeco-boolean-attribute>
+                                    
+                                            <zydeco-number-attribute *ngSwitchCase="AttributeType.NUMBER"
+                                                [attributeDefinition]="fieldDefinition"
+                                                [editType]="findMatchingModel(delta) != undefined ? 'update' : 'create'"
+                                                [ngModel]="delta.get(fieldDefinition.deltaSelector)"
+                                                (ngModelChange)="delta.set(fieldDefinition.deltaSelector, $event)">
+                                            </zydeco-number-attribute>
+                                        </ng-container>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col">
-                                <button type="submit" class="btn btn-primary btn-block" (click)="toggleDelete(delta)">
-                                    {{ delta.delete ? 'Restore' : 'Delete' }}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="row" *ngFor="let fieldDefinition of getVisibleFields()">
-                            <div class="col">
-                                <label 
-                                    class="col-form-label" 
-                                    [ngClass]="delta.delete == true ? 'strikethrough' : ''"
-                                    *ngIf="findMatchingModel(delta)">
-                                    <h6>{{ fieldDefinition.title }}</h6>
-                                </label>
-                            </div>
-                            <div class="col">
-                                <label 
-                                    *ngIf="findMatchingModel(delta); let model"
-                                    class="form-check-label"
-                                    [ngClass]="delta.delete == true ? 'strikethrough' : ''">
-                                    {{ fieldDefinition.type == AttributeType.DATE ? (model.get(fieldDefinition.deltaSelector) | date:'yyyy-MM-dd':'UTC':'en-US') : model.get(fieldDefinition.deltaSelector) }}
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="row" *ngFor="let fieldDefinition of getVisibleFields()">
-                            <div class="col">
-                                <label class="col-form-label" [ngClass]="delta.delete == true ? 'strikethrough' : ''">
-                                    <h6>{{ fieldDefinition.title }}</h6>
-                                </label>
-                            </div>
-                            <div class="col">
-                                <ng-container [ngSwitch]="fieldDefinition.type">
-                                    <zydeco-string-attribute *ngSwitchCase="AttributeType.STRING"
-                                        [attributeDefinition]="fieldDefinition"
-                                        [editType]="findMatchingModel(delta) != undefined ? 'update' : 'create'"
-                                        [ngModel]="delta.get(fieldDefinition.deltaSelector)"
-                                        (ngModelChange)="delta.set(fieldDefinition.deltaSelector, $event)">
-                                    </zydeco-string-attribute>
-                            
-                                    <zydeco-date-attribute *ngSwitchCase="AttributeType.DATE"
-                                        [attributeDefinition]="fieldDefinition"
-                                        [editType]="findMatchingModel(delta) != undefined ? 'update' : 'create'"
-                                        [ngModel]="delta.get(fieldDefinition.deltaSelector)"
-                                        (ngModelChange)="delta.set(fieldDefinition.deltaSelector, $event)">
-                                    </zydeco-date-attribute>
-                            
-                                    <zydeco-select-attribute *ngSwitchCase="AttributeType.SELECT"
-                                        [attributeDefinition]="fieldDefinition"
-                                        [editType]="findMatchingModel(delta) != undefined ? 'update' : 'create'"
-                                        [ngModel]="delta.get(fieldDefinition.deltaSelector)"
-                                        (ngModelChange)="delta.set(fieldDefinition.deltaSelector, $event)">
-                                    </zydeco-select-attribute>
-                            
-                                    <zydeco-boolean-attribute *ngSwitchCase="AttributeType.BOOLEAN"
-                                        [attributeDefinition]="fieldDefinition"
-                                        [editType]="findMatchingModel(delta) != undefined ? 'update' : 'create'"
-                                        [ngModel]="delta.get(fieldDefinition.deltaSelector)"
-                                        (ngModelChange)="delta.set(fieldDefinition.deltaSelector, $event)">
-                                    </zydeco-boolean-attribute>
-                            
-                                    <zydeco-number-attribute *ngSwitchCase="AttributeType.NUMBER"
-                                        [attributeDefinition]="fieldDefinition"
-                                        [editType]="findMatchingModel(delta) != undefined ? 'update' : 'create'"
-                                        [ngModel]="delta.get(fieldDefinition.deltaSelector)"
-                                        (ngModelChange)="delta.set(fieldDefinition.deltaSelector, $event)">
-                                    </zydeco-number-attribute>
-                                </ng-container>
-                            </div>
-                        </div>
-                    </div>
+                    </ng-container>
                 </div>
             </ng-container>
         </div>

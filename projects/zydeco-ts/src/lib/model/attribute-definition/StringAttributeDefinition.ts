@@ -4,6 +4,7 @@ import { AttributeDefinition, AttributeDefinitionBuilder } from "./AttributeDefi
 export class StringAttributeDefinition extends AttributeDefinition {
     minlength:number = 0;
     maxlength:number = 524288;
+    pattern:string = "";
 
     constructor() {
         super();
@@ -34,6 +35,11 @@ export class StringAttributeDefinitionBuilder extends AttributeDefinitionBuilder
 
     withMaxLength(maxlength:number) {
         (this.attributeDefinition as StringAttributeDefinition).maxlength = maxlength;
+        return this;
+    }
+
+    withPattern(pattern:string) {
+        (this.attributeDefinition as StringAttributeDefinition).pattern = pattern;
         return this;
     }
 }

@@ -15,9 +15,8 @@ import { AttributeComponent } from '../attribute/attribute.component';
   ]
 })
 export class StringAttributeComponent extends AttributeComponent {
-
   override writeValue(value: any) {
-    if (value != null && value.trim() == "")
+    if (value != null && (typeof value != "string" || value.trim() == ""))
     {
       value = undefined;
     }

@@ -8,23 +8,6 @@
             [delta]="delta"
             (valueChanged)="onChange($event)"
         ></zydeco-attribute-row>
-
-        <div class="container-fluid border border-info"
-            *ngIf="attribute.instructions != ''">
-            <div class="row py-2">
-                <div class="col" 
-                    (click)="toggleInstructions()">
-                        <p class="m-0">Instructions for field <strong>{{ attribute.title }}</strong> {{ showInstructions ? '-' : '+' }}</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col"
-                    *ngIf="showInstructions"
-                    (click)="toggleInstructions()">
-                        <p>{{ attribute.instructions }}</p>
-                </div>
-            </div>
-        </div>
     </ng-container>  
 
     <ng-container *ngFor="let attribute of getNestedAttributes()">

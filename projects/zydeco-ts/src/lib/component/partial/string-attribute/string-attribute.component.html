@@ -1,10 +1,12 @@
 <input 
+    name="{{ attributeDefinition.title }}"
     type="text" 
     class="form-control" 
     [(ngModel)]="updatedValue" 
     [minlength]="getStringAttributeDefinition().minlength" 
     [maxlength]="getStringAttributeDefinition().maxlength" 
     [required]="attributeDefinition.required && editType == 'create'"
+    [pattern]="getStringAttributeDefinition().pattern"
     #validator="ngModel"
     [ngClass]="validator.invalid && (validator.dirty || validator.touched) ? 'is-invalid' : ''">
 <div class="invalid-feedback" *ngIf="validator.errors && validator.errors['minlength']">
@@ -15,4 +17,7 @@
 </div>   
 <div class="invalid-feedback" *ngIf="validator.errors && validator.errors['required']">
     Please provide a value for {{ attributeDefinition.title }}.
-</div>   
+</div>     
+<div class="invalid-feedback" *ngIf="validator.errors && validator.errors['pattern']">
+    {{ attributeDefinition.instructions }}
+</div>  

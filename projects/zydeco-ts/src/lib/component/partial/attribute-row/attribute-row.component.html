@@ -1,7 +1,13 @@
 <div class="container border-bottom border-right border-left">
     <div class="row p-2">
         <div class="col-sm-2">
-            {{ attributeDefinition.title }}
+            <h6>{{ attributeDefinition.title }}<span *ngIf="attributeDefinition.required && editType == 'create'">*</span>&nbsp;
+            <img 
+                *ngIf="attributeDefinition.instructions != ''"
+                src="https://img.icons8.com/small/16/000000/help.png" 
+                data-toggle="tooltip" 
+                data-placement="right" 
+                [title]="attributeDefinition.instructions"></h6>
         </div>
     
         <div class="col-sm-5" *ngIf="editType == 'update'">

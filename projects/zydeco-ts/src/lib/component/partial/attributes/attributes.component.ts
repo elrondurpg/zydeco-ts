@@ -40,10 +40,6 @@ export class AttributesComponent implements OnInit, OnChanges {
 
   ngOnInit() { }
 
-  toggleInstructions() {
-    this.showInstructions = !this.showInstructions;
-  }
-
   getFlatAttributes() {
     return this.modelDefinition.attributes.filter(definition => definition.type != AttributeType.NESTED);
   }
